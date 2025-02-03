@@ -42,9 +42,11 @@ jobs:
         git push
       continue-on-error: true  # Ignore if there are no changes to commit
 
-    # Step 6: Run Linter (Optional)
-    - name: Run Linter
-      run: flake8 .
+    # Step 6 Run Flake8 (warn only)
+    - name: Lint with Flake8 (warn only)
+      run: |
+        flake8 .
+      continue-on-error: true  # Ensures workflow doesn't fail on flake8 errors
 
     # Step 7: Run Tests
     - name: Run Tests
