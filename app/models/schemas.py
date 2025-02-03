@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 class Job(BaseModel):
@@ -13,5 +13,5 @@ class Cleaner(BaseModel):
     home_address: str  # Could store coordinates
 
 class ScheduleRequest(BaseModel):
-    jobs: List[Job]
-    cleaners: List[Cleaner]
+    jobs: List[Job] = Field(min_items=1)  # At least one job required
+    cleaners: List[Cleaner] = Field(min_items=1)  # At least one cleaner requi

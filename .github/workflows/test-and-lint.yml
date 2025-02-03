@@ -1,0 +1,51 @@
+name: Test and Format Pipeline
+
+on:
+  pull_request:  # Trigger the workflow when a PR is opened or updated
+    branches:
+      - main  # Runs the workflow for PRs targeting the 'main' branch
+
+jobs:
+  format-and-test:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}  # Required to push changes back
+
+    # Step 2: Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.13.1"
+
+    # Step 3: Install dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black flake8 pytest
+
+    # Step 4: Format Code with Black
+    - name: Format Code
+      run: black .
+    
+    # Step 5: Commit and Push Formatting Changes
+    - name: Commit and Push Changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "chore: auto-format code"
+        git push
+      continue-on-error: true  # Ignore if there are no changes to commit
+
+    # Step 6: Run Linter (Optional)
+    - name: Run Linter
+      run: flake8 .
+
+    # Step 7: Run Tests
+    - name: Run Tests
+      run: pytest
