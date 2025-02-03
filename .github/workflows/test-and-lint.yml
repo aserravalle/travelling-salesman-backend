@@ -1,0 +1,41 @@
+name: Test and Format Pipeline
+
+on:
+  push:  # Runs every time code is pushed to any branch
+    branches-ignore:
+      - main  # Avoid running on main since another workflow handles merges
+
+jobs:
+  format-and-test:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    # Step 3: Install dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install black flake8 pytest
+
+    # Step 4: Format Code with Black (does NOT push)
+    - name: Format Code
+      run: black .
+
+    # Step 5: Run Flake8
+    - name: Lint with Flake8 (warn only)
+      run: |
+        flake8 .
+
+    # Step 6: Run Tests
+    - name: Run Tests
+      run: pytest
