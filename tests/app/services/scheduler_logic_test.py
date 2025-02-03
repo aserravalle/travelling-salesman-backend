@@ -10,10 +10,16 @@ def test_generate_schedule():
         ],
         cleaners=[
             Cleaner(
-                cleaner_id=101, name="John", hours_available=8, home_address="Valencia"
-            ),
+                cleaner_id=101,
+                name="John",
+                hours_available=8,
+                home_address="Valencia"
+            )
             Cleaner(
-                cleaner_id=102, name="Jane", hours_available=8, home_address="Valencia"
+                cleaner_id=102,
+                name="Jane",
+                hours_available=8,
+                home_address="Valencia"
             ),
         ],
     )
