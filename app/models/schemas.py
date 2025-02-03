@@ -16,5 +16,5 @@ class Cleaner(BaseModel):
 
 
 class ScheduleRequest(BaseModel):
-    jobs: List[Job] = Field(min_items=1)  # At least one job required
-    cleaners: List[Cleaner] = Field(min_items=1)  # At least one cleaner requi
+    jobs: List[Job] = Field(min_length=1)  # At least one job required
+    cleaners: List[Cleaner] = Field(min_length=1)  # At least one cleaner required
