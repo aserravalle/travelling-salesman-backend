@@ -1,0 +1,59 @@
+name: Merge to Main Pipeline
+
+on:
+  pull_request:
+    types: [closed]  # Runs only when a PR is merged into main
+    branches:
+      - main
+
+jobs:
+  format-test-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code with permissions to push changes
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    # Step 2: Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    # Step 3: Install dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install black flake8 pytest
+
+    # Step 4: Format Code with Black
+    - name: Format Code
+      run: black .
+
+    # Step 5: Run Tests
+    - name: Run Tests
+      run: pytest
+
+    # Step 6: Commit and Push Formatting Changes
+    - name: Commit and Push Changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git checkout ${{ github.head_ref }}  # Ensure we're on the correct branch
+        git add .
+        git commit -m "chore: auto-format code" || echo "No changes to commit"
+        git push origin ${{ github.head_ref }}
+      continue-on-error: true  # Ignore if there are no changes to commit
+
+    # Step 7: Merge into Main if Tests Pass
+    - name: Merge PR to Main
+      if: success()  # Only merge if tests pass
+      run: |
+        git checkout main
+        git pull origin main
+        git merge --ff-only ${{ github.head_ref }}
+        git push origin main

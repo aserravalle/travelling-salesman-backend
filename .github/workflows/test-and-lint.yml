@@ -1,9 +1,9 @@
 name: Test and Format Pipeline
 
 on:
-  pull_request:  # Trigger the workflow when a PR is opened or updated
-    branches:
-      - main  # Runs the workflow for PRs targeting the 'main' branch
+  push:  # Runs every time code is pushed to any branch
+    branches-ignore:
+      - main  # Avoid running on main since another workflow handles merges
 
 jobs:
   format-and-test:
@@ -13,14 +13,12 @@ jobs:
     # Step 1: Checkout the code
     - name: Checkout Code
       uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}  # Required to push changes back
 
     # Step 2: Set up Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.13.1"
+        python-version: "3.9"
 
     # Step 3: Install dependencies
     - name: Install Dependencies
@@ -29,26 +27,15 @@ jobs:
         pip install -r requirements.txt
         pip install black flake8 pytest
 
-    # Step 4: Format Code with Black
+    # Step 4: Format Code with Black (does NOT push)
     - name: Format Code
       run: black .
-    
-    # Step 5: Commit and Push Formatting Changes
-    - name: Commit and Push Changes
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
-        git commit -m "chore: auto-format code"
-        git push
-      continue-on-error: true  # Ignore if there are no changes to commit
 
-    # Step 6 Run Flake8 (warn only)
+    # Step 5: Run Flake8
     - name: Lint with Flake8 (warn only)
       run: |
         flake8 .
-      continue-on-error: true  # Ensures workflow doesn't fail on flake8 errors
 
-    # Step 7: Run Tests
+    # Step 6: Run Tests
     - name: Run Tests
       run: pytest
