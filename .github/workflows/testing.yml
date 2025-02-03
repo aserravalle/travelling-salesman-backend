@@ -1,16 +1,16 @@
-name: Test and Format Pipeline
+name: Run Unit Tests
 
 on:
-  push:  # Runs every time code is pushed to any branch
+  push:
     branches-ignore:
-      - main  # Avoid running on main since another workflow handles merges
+      - main  # Avoid running on main since validation is handled separately
 
 jobs:
   format-and-test:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
+    # Step 1: Checkout the PR branch
     - name: Checkout Code
       uses: actions/checkout@v3
 
@@ -27,14 +27,13 @@ jobs:
         pip install -r requirements.txt
         pip install black flake8 pytest
 
-    # Step 4: Format Code with Black (does NOT push)
+    # Step 4: Format Code (but do not fail)
     - name: Format Code
       run: black .
 
-    # Step 5: Run Flake8
+    # Step 5: Run Linter (warn only, does not fail)
     - name: Lint with Flake8 (warn only)
-      run: |
-        flake8 .
+      run: flake8 . || true  # Allows warnings without failing the pipeline
 
     # Step 6: Run Tests
     - name: Run Tests
