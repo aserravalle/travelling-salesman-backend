@@ -1,12 +1,6 @@
-from app.models.schemas import RosterRequest, Job, Salesman
+from app.models.schemas import Job, Salesman
 from datetime import timedelta
 from typing import List, Dict, Tuple
-
-
-def generate_roster(schedule_data: RosterRequest) -> Dict[int, List[int]]:
-    jobs = schedule_data.jobs.copy()
-    salesmen = schedule_data.salesman.copy()
-    return assign_jobs(jobs, salesmen)
 
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Dict[int, List[int]]:

@@ -18,7 +18,7 @@ def test_assign_jobs():
 
     salesmen = [
         {
-            "id": 1,
+            "id": 101,
             "home_location": [40.730610, -73.935242],
             "start_time": "2025-02-05T09:00:00",
             "end_time": "2025-02-05T17:00:00",
@@ -29,4 +29,4 @@ def test_assign_jobs():
 
     assert response.status_code == 200
     assert isinstance(response.json(), dict)
-    assert 1 in response.json()
+    assert "101" in response.json()
