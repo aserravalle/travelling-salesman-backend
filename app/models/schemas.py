@@ -1,20 +1,23 @@
 from pydantic import BaseModel, Field
-from typing import List
+from datetime import datetime
+from typing import Tuple, List
 
 
 class Job(BaseModel):
-    property_id: int
-    duration: int  # Minutes
-    time_window: str  # "ENTRADA"/"SALIDA"
+    id: int
+    location: Tuple[float, float]
+    duration: int
+    entry_time: datetime
+    exit_time: datetime
 
 
-class Cleaner(BaseModel):
-    cleaner_id: int
-    name: str
-    hours_available: int
-    home_address: str  # Could store coordinates
+class Salesman(BaseModel):
+    id: int
+    home_location: Tuple[float, float]
+    start_time: datetime
+    end_time: datetime
 
 
-class ScheduleRequest(BaseModel):
+class RosterRequest(BaseModel):
     jobs: List[Job] = Field(min_length=1)  # At least one job required
-    cleaners: List[Cleaner] = Field(min_length=1)  # At least one cleaner required
+    salesman: List[Salesman] = Field(min_length=1)  # At least one cleaner required

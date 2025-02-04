@@ -1,29 +1,39 @@
-from app.services.scheduler_logic import generate_schedule
-from app.models.schemas import ScheduleRequest, Job, Cleaner
+from app.services.scheduler_logic import assign_jobs
+from app.models.schemas import Job, Salesman
+from datetime import datetime
 
 
-def test_generate_schedule():
-    schedule_data = ScheduleRequest(
-        jobs=[
-            Job(property_id=1, duration=90, time_window="ENTRADA"),
-            Job(property_id=2, duration=60, time_window="SALIDA"),
-        ],
-        cleaners=[
-            Cleaner(
-                cleaner_id=101,
-                name="John",
-                hours_available=8,
-                home_address="Valencia"
-            ),
-            Cleaner(
-                cleaner_id=102, name="Jane", hours_available=8, home_address="Valencia"
-            ),
-        ],
-    )
+def test_assign_jobs_logic():
+    jobs = [
+        Job(
+            id=1,
+            date=datetime(2025, 2, 5, 9, 0, 0),
+            location=(10, 10),
+            duration=60,
+            entry_time=datetime(2025, 2, 5, 9, 0, 0),
+            exit_time=datetime(2025, 2, 5, 12, 0, 0),
+        ),
+        Job(
+            id=2,
+            date=datetime(2025, 2, 5, 9, 0, 0),
+            location=(20, 20),
+            duration=60,
+            entry_time=datetime(2025, 2, 5, 9, 0, 0),
+            exit_time=datetime(2025, 2, 5, 12, 0, 0),
+        ),
+    ]
 
-    schedule_result = generate_schedule(schedule_data)
+    salesmen = [
+        Salesman(
+            id=1,
+            home_location=(40.730610, -73.935242),
+            start_time=datetime(2025, 2, 5, 9, 0, 0),
+            end_time=datetime(2025, 2, 5, 17, 0, 0),
+        )
+    ]
 
-    assert isinstance(schedule_result, list)
-    assert len(schedule_result) == 2
-    assert "property_id" in schedule_result[0]
-    assert "assigned_cleaner" in schedule_result[0]
+    result = assign_jobs(jobs, salesmen)
+
+    assert isinstance(result, dict)
+    assert 1 in result
+    assert len(result[1]) > 0
