@@ -5,9 +5,10 @@ from typing import List, Dict, Tuple
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Dict[int, List[int]]:
     jobs.sort(key=lambda x: (x.date, x.entry_time, x.exit_time - x.entry_time))
-    roster = {s.id: [] for s in salesmen}
+    roster = {s.salesman_id: [] for s in salesmen}
     salesmen_status = {
-        s.id: {"location": s.home_location, "time": s.start_time} for s in salesmen
+        s.salesman_id: {"location": s.home_location, "time": s.start_time}
+        for s in salesmen
     }
 
     for job in jobs:
@@ -15,7 +16,7 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Dict[int, List[int
         best_time = None
 
         for salesman in salesmen:
-            state = salesmen_status[salesman.id]
+            state = salesmen_status[salesman.salesman_id]
             travel_time = calculate_travel_time(
                 from_location=state["time"], to_location=job.location
             )
@@ -39,9 +40,9 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Dict[int, List[int
                 best_time = arrival_time
 
         if best_salesman:
-            roster[best_salesman.id].append(job.id)
-            salesmen_status[best_salesman.id]["location"] = job.location
-            salesmen_status[best_salesman.id]["time"] = best_time + timedelta(
+            roster[best_salesman.salesman_id].append(job.job_id)
+            salesmen_status[best_salesman.salesman_id]["location"] = job.location
+            salesmen_status[best_salesman.salesman_id]["time"] = best_time + timedelta(
                 minutes=job.duration
             )
         else:

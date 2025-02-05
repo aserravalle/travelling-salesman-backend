@@ -6,7 +6,7 @@ from datetime import datetime
 def test_assign_jobs_logic():
     jobs = [
         Job(
-            id=1,
+            job_id=1,
             date=datetime(2025, 2, 5, 9, 0, 0),
             location=(10, 10),
             duration=60,
@@ -14,7 +14,7 @@ def test_assign_jobs_logic():
             exit_time=datetime(2025, 2, 5, 12, 0, 0),
         ),
         Job(
-            id=2,
+            job_id=2,
             date=datetime(2025, 2, 5, 9, 0, 0),
             location=(20, 20),
             duration=60,
@@ -25,7 +25,7 @@ def test_assign_jobs_logic():
 
     salesmen = [
         Salesman(
-            id=1,
+            salesman_id=1,
             home_location=(40.730610, -73.935242),
             start_time=datetime(2025, 2, 5, 9, 0, 0),
             end_time=datetime(2025, 2, 5, 17, 0, 0),

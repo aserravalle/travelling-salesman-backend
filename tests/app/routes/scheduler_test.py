@@ -7,18 +7,20 @@ client = TestClient(app)
 def test_assign_jobs():
     jobs = [
         {
-            "id": 1,
+            "job_id": 1,
             "date": "2025-02-05T09:00:00",
             "location": [40.7128, -74.0060],
             "duration": 60,
             "entry_time": "2025-02-05T09:00:00",
             "exit_time": "2025-02-05T12:00:00",
+            "salesman_id": None,
+            "start_time": None,
         }
     ]
 
     salesmen = [
         {
-            "id": 101,
+            "salesman_id": 101,
             "home_location": [40.730610, -73.935242],
             "start_time": "2025-02-05T09:00:00",
             "end_time": "2025-02-05T17:00:00",
