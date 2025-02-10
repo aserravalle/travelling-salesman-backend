@@ -16,9 +16,9 @@ class Job(BaseModel):
 
 class Salesman(BaseModel):
     salesman_id: int
-    home_location: Tuple[float, float]  # starting location of the salesman
-    start_time: datetime  # earliest available start time of the salesman
-    end_time: datetime  # latest available end time of the salesman
+    home_location: Tuple[float, float]      # starting location of the salesman
+    start_time: datetime                    # earliest available start time of the salesman
+    end_time: datetime                      # latest available end time of the salesman
 
 
 class Roster(BaseModel):
@@ -28,5 +28,5 @@ class Roster(BaseModel):
 
 class Rosters(BaseModel):
     roster_id: int
-    date: datetime  # effective date of the roster
-    roster: List[Roster]  # list of each salesman's roster
+    date: datetime                      # effective date of the roster
+    roster: List[Roster]    # list of each salesman's roster

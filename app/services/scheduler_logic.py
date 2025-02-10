@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple
 
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Dict[int, List[int]]:
-    jobs.sort(key=lambda x: (x.date, x.entry_time, x.exit_time - x.entry_time))
+    jobs = prioritise_jobs(jobs)
     roster = {s.salesman_id: [] for s in salesmen}
     salesmen_status = {
         s.salesman_id: {"location": s.home_location, "time": s.start_time}
@@ -50,8 +50,14 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Dict[int, List[int
 
     return roster
 
+def prioritise_jobs(jobs: List[Job]):
+    jobs_copy = jobs.copy()
+    jobs_copy.sort(key=lambda x: (x.date, x.entry_time, x.exit_time - x.entry_time))
+    return jobs_copy
+
 
 def calculate_travel_time(
     from_location: Tuple[float, float], to_location: Tuple[float, float]
 ):
+    # TODO euclidian distance algorithm for determining rough distance between these points.
     return timedelta(minutes=30)

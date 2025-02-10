@@ -13,8 +13,6 @@ def test_assign_jobs():
             "duration": 60,
             "entry_time": "2025-02-05T09:00:00",
             "exit_time": "2025-02-05T12:00:00",
-            "salesman_id": None,
-            "start_time": None,
         }
     ]
 
