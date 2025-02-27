@@ -69,9 +69,7 @@ def test_assign_jobs_api():
     assert "roster_id" in response_json, "Response should contain 'roster_id'"
     assert "date" in response_json, "Response should contain 'date'"
     assert "jobs" in response_json, "Response should contain 'jobs'"
-    assert (
-        "unassigned_jobs" in response_json
-    ), "Response should contain 'unassigned_jobs'"
+    assert "unassigned_jobs" in response_json, "Response should contain 'unassigned_jobs'"
     assert "message" in response_json, "Response should contain 'message'"
 
     # ✅ Validate jobs are assigned
@@ -80,15 +78,9 @@ def test_assign_jobs_api():
 
     # Ensure salesman IDs are **strings** in the JSON response
     for salesman_id in assigned_jobs.keys():
-        assert (
-            salesman_id.isdigit()
-        ), "Salesman ID should be a string in the JSON response"
-        assert isinstance(
-            assigned_jobs[salesman_id], list
-        ), f"Jobs for salesman {salesman_id} should be a list"
-        assert (
-            len(assigned_jobs[salesman_id]) > 0
-        ), f"Salesman {salesman_id} should have at least one assigned job"
+        assert salesman_id.isdigit(), "Salesman ID should be a string in the JSON response"
+        assert isinstance(assigned_jobs[salesman_id], list), f"Jobs for salesman {salesman_id} should be a list"
+        assert len(assigned_jobs[salesman_id]) > 0, f"Salesman {salesman_id} should have at least one assigned job"
 
     # ✅ Validate each job has required fields
     for salesman_id, job_list in assigned_jobs.items():
@@ -103,21 +95,13 @@ def test_assign_jobs_api():
             assert "start_time" in job, "Each job should contain 'start_time'"
 
     # ✅ Validate message
-    assert (
-        response_json["message"] == "Roster completed with all jobs assigned"
-    ), "Message should indicate all jobs are assigned"
+    assert response_json["message"] == "Roster completed with all jobs assigned", "Message should indicate all jobs are assigned"
 
     # ✅ Validate specific job assignments (replace with correct job_ids if needed)
     assert "101" in assigned_jobs, "Salesman 101 should have assigned jobs"
     assert "102" in assigned_jobs, "Salesman 102 should have assigned jobs"
-    assert set(job["job_id"] for job in assigned_jobs["101"]) == {
-        "1",
-        "3",
-        "4",
-    }, "Salesman 101 has wrong jobs assigned"
-    assert set(job["job_id"] for job in assigned_jobs["102"]) == {
-        "2"
-    }, "Salesman 102 has wrong jobs assigned"
+    assert set(job["job_id"] for job in assigned_jobs["101"]) == {"1", "3", "4"}, "Salesman 101 has wrong jobs assigned"
+    assert set(job["job_id"] for job in assigned_jobs["102"]) == {"2"}, "Salesman 102 has wrong jobs assigned"
 
 
 def test_no_jobs_supplied():
@@ -152,22 +136,15 @@ def test_no_jobs_supplied():
     assert "roster_id" in response_json, "Response should contain 'roster_id'"
     assert "date" in response_json, "Response should contain 'date'"
     assert "jobs" in response_json, "Response should contain 'jobs'"
-    assert (
-        "unassigned_jobs" in response_json
-    ), "Response should contain 'unassigned_jobs'"
+    assert "unassigned_jobs" in response_json, "Response should contain 'unassigned_jobs'"
     assert "message" in response_json, "Response should contain 'message'"
 
     # ✅ Validate no jobs are assigned
-    assert response_json["jobs"] == {
-        "101": [],
-        "102": [],
-    }, "Salesmen should not have any jobs assigned"
+    assert response_json["jobs"] == {"101": [], "102": []}, "Salesmen should not have any jobs assigned"
     assert len(response_json["unassigned_jobs"]) == 0, "No jobs should be unassigned"
 
     # ✅ Validate message
-    assert (
-        response_json["message"] == "No jobs to assign"
-    ), "Message should indicate no jobs to assign"
+    assert response_json["message"] == "No jobs to assign", "Message should indicate no jobs to assign"
 
 
 def test_unassignable_jobs():
@@ -221,28 +198,17 @@ def test_unassignable_jobs():
     assert "roster_id" in response_json, "Response should contain 'roster_id'"
     assert "date" in response_json, "Response should contain 'date'"
     assert "jobs" in response_json, "Response should contain 'jobs'"
-    assert (
-        "unassigned_jobs" in response_json
-    ), "Response should contain 'unassigned_jobs'"
+    assert "unassigned_jobs" in response_json, "Response should contain 'unassigned_jobs'"
     assert "message" in response_json, "Response should contain 'message'"
 
     # ✅ Validate assigned jobs
-    assert set(job["job_id"] for job in response_json["jobs"]["101"]) == {
-        "1",
-        "2",
-    }, "Salesman 101 should have jobs 1 and 2"
+    assert set(job["job_id"] for job in response_json["jobs"]["101"]) == {"1", "2"}, "Salesman 101 should have jobs 1 and 2"
 
     # ✅ Validate unassigned jobs
     unassigned_jobs = response_json["unassigned_jobs"]
-    assert isinstance(
-        unassigned_jobs, list
-    ), "Unassigned jobs should be returned as a list"
+    assert isinstance(unassigned_jobs, list), "Unassigned jobs should be returned as a list"
     assert len(unassigned_jobs) == 1, "There should be one unassigned job"
-    assert (
-        unassigned_jobs[0]["job_id"] == "3"
-    ), "The unassigned job should be job_id '3'"
+    assert unassigned_jobs[0]["job_id"] == "3", "The unassigned job should be job_id '3'"
 
     # ✅ Validate message
-    assert (
-        response_json["message"] == "Roster completed with unassigned jobs"
-    ), "Message should indicate unassigned jobs"
+    assert response_json["message"] == "Roster completed with unassigned jobs", "Message should indicate unassigned jobs"

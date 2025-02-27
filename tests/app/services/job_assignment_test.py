@@ -60,21 +60,13 @@ def test_assign_jobs():
     roster = assign_jobs(jobs, salesmen)
 
     # ✅ All jobs should be assigned
-    assigned_salesmen = [
-        job.salesman_id for job_list in roster.jobs.values() for job in job_list
-    ]
-    assert len(assigned_salesmen) == len(
-        jobs
-    ), "All jobs should be assigned to salesmen."
+    assigned_salesmen = [job.salesman_id for job_list in roster.jobs.values() for job in job_list]
+    assert len(assigned_salesmen) == len(jobs), "All jobs should be assigned to salesmen."
 
     # ✅ Each job should be assigned to the closest available salesman
     for job in jobs:
-        assert (
-            job.salesman_id is not None
-        ), f"Job {job.job_id} should be assigned to a salesman."
-        assert any(
-            job in roster.jobs[sman.salesman_id] for sman in salesmen
-        ), f"Job {job.job_id} should be in at least one salesman's job list."
+        assert job.salesman_id is not None, f"Job {job.job_id} should be assigned to a salesman."
+        assert any(job in roster.jobs[sman.salesman_id] for sman in salesmen), f"Job {job.job_id} should be in at least one salesman's job list."
 
     # ✅ Jobs should be assigned in chronological order
     for sman in salesmen:
