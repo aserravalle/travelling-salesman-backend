@@ -15,7 +15,7 @@ class Job(BaseModel):
     salesman_id: Optional[int] = None  # designated salesman's ID
     start_time: Optional[datetime] = None  # designated start time
 
-    def update_status(self, salesman_id, job_start_time):
+    def assign_salesman_and_start_time(self, salesman_id, job_start_time):
         self.salesman_id = salesman_id
         self.start_time = job_start_time
 

@@ -25,7 +25,7 @@ class Roster(BaseModel):
     def assign_job_to_salesman(
         self, job: Job, salesman: Salesman, job_start_time: datetime
     ) -> None:
-        job.update_status(salesman.salesman_id, job_start_time)
-        salesman.update_status(job)
+        job.assign_salesman_and_start_time(salesman.salesman_id, job_start_time)
+        salesman.assign_to_salesman(job)
 
         self.jobs[salesman.salesman_id].append(job)

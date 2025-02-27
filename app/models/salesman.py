@@ -29,7 +29,7 @@ class Salesman(BaseModel):
         )
         return job_finished_in_time and not salesman_exceeds_max_hours
 
-    def update_status(self, job: Job) -> None:
+    def assign_to_salesman(self, job: Job) -> None:
         if self.is_first_job():
             self.start_time = job.start_time
         self.current_location = job.location
