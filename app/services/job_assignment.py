@@ -9,10 +9,7 @@ from datetime import date
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:
     jobs = sorted(jobs)
-    roster = Roster(
-        roster_id="1",  # TODO generate unique id
-        date=jobs[0].date if jobs else date.today(),
-    )
+    roster = Roster()
     roster.add_salesmen(salesmen)
 
     if not jobs:

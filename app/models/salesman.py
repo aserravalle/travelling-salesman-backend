@@ -8,13 +8,13 @@ from app.models.location import Location
 
 class Salesman(BaseModel):
     salesman_id: str
-    home_location: Location                         # starting location of the salesman
-    start_time: datetime                            # earliest available start datetime of the salesman
-    end_time: datetime                              # latest available end datetime of the salesman
-    current_location: Optional[Location] = None     # current location of the salesman during job assignment
-    current_time: Optional[datetime] = None         # current datetime of the salesman during job assignment
-    time_worked_mins: Optional[int] = 0             # how long the salesman has already worked today
-    max_workday_mins: Optional[int] = 8 * 60  # maximum workday is 8h
+    home_location: Location                 # starting location of the salesman
+    start_time: datetime                    # earliest available start datetime of the salesman
+    end_time: datetime                      # latest available end datetime of the salesman
+    current_location: Location = None       # current location of the salesman during job assignment
+    current_time: datetime = None           # current datetime of the salesman during job assignment
+    time_worked_mins: int = 0               # how long the salesman has already worked today
+    max_workday_mins: int = 8 * 60          # maximum workday is 8h
 
     def can_complete_job_in_time(self, job_exit_time, completion_time) -> bool:
         job_finished_in_time = completion_time <= min(self.end_time, job_exit_time)
