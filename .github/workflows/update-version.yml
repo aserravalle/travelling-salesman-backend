@@ -1,0 +1,43 @@
+name: Auto Merge PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Check if version is updated
+        id: check_version
+        run: |
+          VERSION_LINE=$(grep -n 'version=' app/main.py | cut -d : -f 1)
+          if [ -z "$VERSION_LINE" ]; then
+            echo "Version not found in FastAPI setup"
+            exit 1
+          fi
+          echo "::set-output name=version_updated::true"
+
+  merge:
+    needs: [check-version]
+    runs-on: ubuntu-latest
+    if: ${{ needs.check-version.outputs.version_updated == 'true' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR
+        uses: pascalgn/automerge-action@v0.14.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          mergeMethod: squash
+          commitMessage: "Auto-merged PR with version update"
