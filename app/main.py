@@ -4,7 +4,7 @@ from app.routes import scheduler
 app = FastAPI(
     title="Travelling Salesman API",
     description="API for generating job rosters using a dummy Traveling Salesman algorithm",
-    version="1.0.0",
+    version="1.0.1",
 )
 app.include_router(scheduler.router)
 
