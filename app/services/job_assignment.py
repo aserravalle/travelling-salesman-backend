@@ -9,7 +9,7 @@ from app.models.salesman import Salesman
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:
     jobs = sorted(jobs)
     roster = Roster(
-        roster_id="1",
+        roster_id="1",  # TODO generate unique id
         date=jobs[0].date,
     )
     roster.add_salesmen(salesmen)

@@ -2,10 +2,10 @@ from datetime import datetime
 from app.models.job import Job
 from app.models.salesman import Salesman
 from app.models.location import Location
-from app.services.scheduler_logic import assign_jobs
+from app.services.job_assignment import assign_jobs
 
 
-def test_assign_jobs_logic():
+def test_assign_jobs():
     # Create Salesmen
     salesmen = [
         Salesman(
