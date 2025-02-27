@@ -1,11 +1,12 @@
 from fastapi import APIRouter
-from app.models.schemas import ScheduleRequest
-from app.services.scheduler_logic import generate_schedule
+from app.models.roster import Roster
+from app.models.roster_request import RosterRequest
+from app.services.job_assignment import assign_jobs
 
-router = APIRouter(prefix="/schedule", tags=["Scheduling"])
+router = APIRouter()
 
 
-@router.post("/")
-def schedule_jobs(schedule_data: ScheduleRequest):
-    result = generate_schedule(schedule_data)
-    return {"schedule": result}
+@router.post("/assign_jobs")
+def assign_jobs_endpoint(request: RosterRequest) -> Roster:
+    roster = assign_jobs(request.jobs, request.salesmen)
+    return roster.model_dump()
