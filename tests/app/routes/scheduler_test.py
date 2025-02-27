@@ -14,7 +14,7 @@ def test_assign_jobs_api():
                 "location": [40.7128, -74.0060],
                 "duration_mins": 60,
                 "entry_time": "2025-02-05T09:00:00",
-                "exit_time": "2025-02-05T12:00:00",
+                "exit_time": "2025-02-05T12:00:00"
             },
             {
                 "job_id": "2",
@@ -22,7 +22,7 @@ def test_assign_jobs_api():
                 "location": [40.7130, -74.0055],
                 "duration_mins": 45,
                 "entry_time": "2025-02-05T10:30:00",
-                "exit_time": "2025-02-05T14:00:00",
+                "exit_time": "2025-02-05T14:00:00"
             },
             {
                 "job_id": "3",
@@ -30,7 +30,7 @@ def test_assign_jobs_api():
                 "location": [40.7140, -74.0050],
                 "duration_mins": 30,
                 "entry_time": "2025-02-05T11:30:00",
-                "exit_time": "2025-02-05T13:00:00",
+                "exit_time": "2025-02-05T13:00:00"
             },
             {
                 "job_id": "4",
@@ -38,23 +38,23 @@ def test_assign_jobs_api():
                 "location": [40.7150, -74.0045],
                 "duration_mins": 90,
                 "entry_time": "2025-02-05T12:30:00",
-                "exit_time": "2025-02-05T15:00:00",
-            },
+                "exit_time": "2025-02-05T15:00:00"
+            }
         ],
         "salesmen": [
             {
                 "salesman_id": "101",
                 "home_location": [40.730610, -73.935242],
                 "start_time": "2025-02-05T09:00:00",
-                "end_time": "2025-02-05T17:00:00",
+                "end_time": "2025-02-05T17:00:00"
             },
             {
                 "salesman_id": "102",
                 "home_location": [40.750610, -73.975242],
                 "start_time": "2025-02-05T09:00:00",
-                "end_time": "2025-02-05T17:00:00",
-            },
-        ],
+                "end_time": "2025-02-05T17:00:00"
+            }
+        ]
     }
 
     # Send request to API
@@ -129,15 +129,15 @@ def test_no_jobs_supplied():
                 "salesman_id": "101",
                 "home_location": [40.730610, -73.935242],
                 "start_time": "2025-02-05T09:00:00",
-                "end_time": "2025-02-05T17:00:00",
+                "end_time": "2025-02-05T17:00:00"
             },
             {
                 "salesman_id": "102",
                 "home_location": [40.750610, -73.975242],
                 "start_time": "2025-02-05T09:00:00",
-                "end_time": "2025-02-05T17:00:00",
-            },
-        ],
+                "end_time": "2025-02-05T17:00:00"
+            }
+        ]
     }
 
     # Send request to API
@@ -180,7 +180,7 @@ def test_unassignable_jobs():
                 "location": [40.7128, -74.0060],
                 "duration_mins": 60,
                 "entry_time": "2025-02-05T09:00:00",
-                "exit_time": "2025-02-05T12:00:00",
+                "exit_time": "2025-02-05T12:00:00"
             },
             {
                 "job_id": "2",
@@ -188,25 +188,25 @@ def test_unassignable_jobs():
                 "location": [40.7130, -74.0055],
                 "duration_mins": 45,
                 "entry_time": "2025-02-05T10:30:00",
-                "exit_time": "2025-02-05T14:00:00",
+                "exit_time": "2025-02-05T14:00:00"
             },
             {
                 "job_id": "3",
-                "date": "2025-02-05T18:00:00",  # Unassignable job (outside working hours)
+                "date": "2025-02-05T18:00:00",
                 "location": [40.7140, -74.0050],
                 "duration_mins": 30,
                 "entry_time": "2025-02-05T18:30:00",
-                "exit_time": "2025-02-05T19:00:00",
-            },
+                "exit_time": "2025-02-05T19:00:00"
+            }
         ],
         "salesmen": [
             {
                 "salesman_id": "101",
                 "home_location": [40.730610, -73.935242],
                 "start_time": "2025-02-05T09:00:00",
-                "end_time": "2025-02-05T17:00:00",
-            },
-        ],
+                "end_time": "2025-02-05T17:00:00"
+            }
+        ]
     }
 
     # Send request to API
