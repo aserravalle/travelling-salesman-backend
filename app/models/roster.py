@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from datetime import datetime
 from typing import Dict, List, Optional
 
@@ -9,7 +9,9 @@ from app.models.salesman import Salesman
 class Roster(BaseModel):
     roster_id: str
     date: datetime  # effective date of the roster
-    jobs: Optional[Dict[str, List[Job]]] = {}  # key: salesman_id, value: list of jobs they will complete
+    jobs: Optional[Dict[str, List[Job]]] = (
+        {}
+    )  # key: salesman_id, value: list of jobs they will complete
     unassigned_jobs: List[Job] = []
     message: Optional[str] = None
 

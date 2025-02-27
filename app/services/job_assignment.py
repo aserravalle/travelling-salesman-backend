@@ -41,5 +41,4 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:
             roster.message = "Roster completed with unassigned jobs"
             roster.unassigned_jobs.append(job)
 
-
     return roster
