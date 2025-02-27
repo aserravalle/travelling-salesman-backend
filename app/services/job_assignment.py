@@ -14,6 +14,11 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:
     )
     roster.add_salesmen(salesmen)
 
+    if not jobs:
+        roster.message = "No jobs to assign"
+        return roster
+
+    roster.message = "Roster completed with all jobs assigned"
     for job in jobs:
         best_salesman = None
         best_time = None
@@ -32,8 +37,8 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:
         if best_salesman:
             roster.assign_job_to_salesman(job, best_salesman, best_time)
         else:
-            raise ValueError(
-                f"Job {job.job_id} cannot be assigned due to time constraints."
-            )  # TODO error handling
+            roster.message = "Roster completed with unassigned jobs"
+            roster.unassigned_jobs.append(job)
+
 
     return roster

@@ -9,9 +9,9 @@ from app.models.salesman import Salesman
 class Roster(BaseModel):
     roster_id: str
     date: datetime  # effective date of the roster
-    jobs: Optional[Dict[str, List[Job]]] = Field(
-        default_factory=dict
-    )  # key: salesman_id, value: list of jobs they will complete
+    jobs: Optional[Dict[str, List[Job]]] = {}  # key: salesman_id, value: list of jobs they will complete
+    unassigned_jobs: List[Job] = []
+    message: Optional[str] = None
 
     def add_salesmen(self, salesmen: List[Salesman] = []):
         for sman in salesmen:
