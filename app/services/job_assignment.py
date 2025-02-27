@@ -4,13 +4,14 @@ from typing import List
 from app.models.job import Job
 from app.models.roster import Roster
 from app.models.salesman import Salesman
+from datetime import date
 
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:
     jobs = sorted(jobs)
     roster = Roster(
         roster_id="1",  # TODO generate unique id
-        date=jobs[0].date,
+        date=jobs[0].date if jobs else date.today(),
     )
     roster.add_salesmen(salesmen)
 
