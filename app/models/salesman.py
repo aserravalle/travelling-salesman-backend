@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from datetime import datetime, timedelta
-from typing import Optional
 
 from app.models.job import Job
 from app.models.location import Location
