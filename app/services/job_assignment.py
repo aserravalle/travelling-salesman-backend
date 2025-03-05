@@ -4,7 +4,6 @@ from typing import List
 from app.models.job import Job
 from app.models.roster import Roster
 from app.models.salesman import Salesman
-from datetime import date
 
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> Roster:

@@ -12,7 +12,7 @@ class Job(BaseModel):
     duration_mins: int                          # estimated duration of service
     entry_time: datetime                        # earliest entry time for starting the job
     exit_time: datetime                         # latest exit time for completing the job
-    salesman_id: Optional[int] = None           # designated salesman's ID
+    salesman_id: Optional[str] = None           # designated salesman's ID
     start_time: Optional[datetime] = None       # designated start time
 
     def assign_salesman_and_start_time(self, salesman_id, job_start_time):
