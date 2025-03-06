@@ -26,15 +26,21 @@ def test_assign_first_job_to_salesman():
     job_start_time = datetime(2025, 2, 5, 10, 0, 0)
     roster.assign_job_to_salesman(job, sman, job_start_time)
 
-    assert job in roster.jobs[sman.salesman_id], "Job 1 should be added to the salesman's job list."
+    assert (
+        job in roster.jobs[sman.salesman_id]
+    ), "Job 1 should be added to the salesman's job list."
     assert job.salesman_id == sman.salesman_id, "Job 1 should be assigned to salesman 1"
     assert job.start_time == job_start_time, "Job 1 start time should be assigned"
 
-    assert sman.current_location == job.location, "Salesman location should be updated to the most recent job location"
+    assert (
+        sman.current_location == job.location
+    ), "Salesman location should be updated to the most recent job location"
     assert sman.current_time == job_start_time + timedelta(
         minutes=job.duration_mins
     ), "Salesman time should be set to the jobs estimated completion time"
-    assert sman.start_time == job_start_time, "Salesman's start time should be set on the first job."
+    assert (
+        sman.start_time == job_start_time
+    ), "Salesman's start time should be set on the first job."
 
 
 def test_assign_multiple_jobs_to_salesman():
@@ -66,7 +72,9 @@ def test_assign_multiple_jobs_to_salesman():
     job1_start_time = datetime(2025, 2, 5, 10, 0, 0)
     roster.assign_job_to_salesman(job1, sman, job1_start_time)
 
-    assert sman.current_location == job1.location, "Salesman location should be updated to first jobs location"
+    assert (
+        sman.current_location == job1.location
+    ), "Salesman location should be updated to first jobs location"
     assert sman.current_time == job1_start_time + timedelta(
         minutes=job1.duration_mins
     ), "Salesman current_time should be set to the first jobs completion time"
@@ -74,8 +82,12 @@ def test_assign_multiple_jobs_to_salesman():
     job2_start_time = sman.current_time + timedelta(minutes=15)
     roster.assign_job_to_salesman(job2, sman, job2_start_time)
 
-    assert sman.current_location == job2.location, "Salesman location should be updated to second jobs location"
+    assert (
+        sman.current_location == job2.location
+    ), "Salesman location should be updated to second jobs location"
     assert sman.current_time == job2_start_time + timedelta(
         minutes=job2.duration_mins
     ), "Salesman current_time should be updated to second jobs completion time"
-    assert job2 in roster.jobs[sman.salesman_id], "Job 2 should be added to the salesman's list"
+    assert (
+        job2 in roster.jobs[sman.salesman_id]
+    ), "Job 2 should be added to the salesman's list"

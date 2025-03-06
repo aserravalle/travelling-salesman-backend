@@ -5,10 +5,11 @@ from pydantic import Field
 
 from app.models.location import Location
 
+
 class Job(BaseModel):
     """
     Represents a job that needs to be completed by a salesman.
-    
+
     Attributes:
         job_id: Unique identifier for the job
         date: Date the job needs to be completed
@@ -19,6 +20,7 @@ class Job(BaseModel):
         salesman_id: ID of the assigned salesman (optional)
         start_time: Scheduled start time (optional)
     """
+
     job_id: str
     date: datetime
     location: Location
@@ -28,10 +30,12 @@ class Job(BaseModel):
     salesman_id: Optional[str] = None
     start_time: Optional[datetime] = None
 
-    def assign_salesman_and_start_time(self, salesman_id: str, job_start_time: datetime) -> None:
+    def assign_salesman_and_start_time(
+        self, salesman_id: str, job_start_time: datetime
+    ) -> None:
         """
         Assign a salesman and start time to this job.
-        
+
         Args:
             salesman_id: ID of the salesman to assign
             job_start_time: Scheduled start time for the job
@@ -46,5 +50,8 @@ class Job(BaseModel):
         2. Entry time
         3. Time window duration
         """
-        return (self.date, self.entry_time, self.exit_time - self.entry_time
-            ) < (other.date, other.entry_time, other.exit_time - other.entry_time)
+        return (self.date, self.entry_time, self.exit_time - self.entry_time) < (
+            other.date,
+            other.entry_time,
+            other.exit_time - other.entry_time,
+        )

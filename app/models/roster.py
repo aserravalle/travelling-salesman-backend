@@ -6,15 +6,17 @@ from pydantic import Field
 from app.models.job import Job
 from app.models.salesman import Salesman
 
+
 class RosterResponse(BaseModel):
     """
     Represents a daily roster of job assignments to salesmen.
-    
+
     Attributes:
         jobs: Dictionary mapping salesman IDs to their assigned jobs
         unassigned_jobs: List of jobs that couldn't be assigned
         message: Status message about the roster creation
     """
+
     jobs: Dict[str, List[Job]] = Field(default_factory=dict)
     unassigned_jobs: List[Job] = Field(default_factory=list)
     message: Optional[str] = None
@@ -27,7 +29,7 @@ class RosterResponse(BaseModel):
     def add_salesman(self, salesman: Salesman) -> None:
         """
         Initialize a salesman in the roster.
-        
+
         Args:
             salesman: Salesman to add to the roster
         """
@@ -35,10 +37,12 @@ class RosterResponse(BaseModel):
         salesman.current_time = salesman.start_time
         self.jobs[salesman.salesman_id] = []
 
-    def assign_job_to_salesman(self, job: Job, salesman: Salesman, job_start_time: datetime) -> None:
+    def assign_job_to_salesman(
+        self, job: Job, salesman: Salesman, job_start_time: datetime
+    ) -> None:
         """
         Assign a job to a salesman and update relevant states.
-        
+
         Args:
             job: Job to assign
             salesman: Salesman to assign the job to

@@ -5,10 +5,11 @@ from pydantic import Field
 from app.models.location import Location
 from app.models.job import Job
 
+
 class Salesman(BaseModel):
     """
     Represents a salesman who can be assigned jobs.
-    
+
     Attributes:
         salesman_id: Unique identifier for the salesman
         home_location: Starting location of the salesman
@@ -19,6 +20,7 @@ class Salesman(BaseModel):
         time_worked_mins: Minutes worked so far
         max_workday_mins: Maximum allowed work minutes per day
     """
+
     salesman_id: str
     home_location: Location
     start_time: datetime
@@ -28,25 +30,29 @@ class Salesman(BaseModel):
     time_worked_mins: int = Field(default=0, ge=0)
     max_workday_mins: int = Field(default=8 * 60, ge=0)  # 8 hours
 
-    def can_complete_job_in_time(self, job_exit_time: datetime, completion_time: datetime) -> bool:
+    def can_complete_job_in_time(
+        self, job_exit_time: datetime, completion_time: datetime
+    ) -> bool:
         """
         Check if the salesman can complete a job within the given constraints.
-        
+
         Args:
             job_exit_time: Latest allowed completion time for the job
             completion_time: Estimated completion time
-            
+
         Returns:
             bool: True if job can be completed within constraints
         """
         job_finished_in_time = completion_time <= min(self.end_time, job_exit_time)
-        salesman_exceeds_max_hours = (completion_time - self.start_time) > timedelta(minutes=self.max_workday_mins)
+        salesman_exceeds_max_hours = (completion_time - self.start_time) > timedelta(
+            minutes=self.max_workday_mins
+        )
         return job_finished_in_time and not salesman_exceeds_max_hours
 
     def assign_to_salesman(self, job: Job) -> None:
         """
         Update salesman's state after job assignment.
-        
+
         Args:
             job: The job being assigned
         """
@@ -63,10 +69,10 @@ class Salesman(BaseModel):
     def get_arrival_time(self, job: Job) -> datetime:
         """
         Calculate the earliest possible arrival time at a job location.
-        
+
         Args:
             job: The job to travel to
-            
+
         Returns:
             datetime: Earliest possible arrival time
         """

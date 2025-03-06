@@ -5,21 +5,22 @@ from app.models.job import Job
 from app.models.roster import RosterResponse
 from app.models.salesman import Salesman
 
+
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
     """
     Assign jobs to salesmen optimally based on location and time constraints.
-    
+
     The algorithm:
     1. Sorts jobs by date and time
     2. For each job, finds the best available salesman based on:
        - Travel time to job location
        - Available working hours
        - Maximum working day constraints
-    
+
     Args:
         jobs: List of jobs to assign
         salesmen: List of available salesmen
-        
+
     Returns:
         Roster: Complete roster with job assignments and status
     """
@@ -33,7 +34,7 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
 
     for job in jobs:
         best_assignment = _find_best_salesman(job, salesmen)
-        
+
         if best_assignment:
             salesman, start_time = best_assignment
             roster.assign_job_to_salesman(job, salesman, start_time)
@@ -43,14 +44,17 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
     roster.message = _generate_roster_message(roster)
     return roster
 
-def _find_best_salesman(job: Job, salesmen: List[Salesman]) -> tuple[Salesman, datetime] | None:
+
+def _find_best_salesman(
+    job: Job, salesmen: List[Salesman]
+) -> tuple[Salesman, datetime] | None:
     """
     Find the best salesman for a job based on availability and location.
-    
+
     Args:
         job: Job to assign
         salesmen: List of available salesmen
-        
+
     Returns:
         tuple: (best_salesman, start_time) or None if no suitable salesman found
     """
@@ -70,13 +74,14 @@ def _find_best_salesman(job: Job, salesmen: List[Salesman]) -> tuple[Salesman, d
 
     return (best_salesman, best_time) if best_salesman else None
 
+
 def _generate_roster_message(roster: RosterResponse) -> str:
     """
     Generate an appropriate status message for the roster.
-    
+
     Args:
         roster: The completed roster
-        
+
     Returns:
         str: Status message
     """
