@@ -71,24 +71,32 @@ def _find_best_salesman(
         if not salesman.can_complete_job_in_time(job.exit_time, completion_time):
             continue
 
-        if _new_salesman_is_better(best_salesman, best_time, best_travel_time, travel_time, arrival_time):
+        if _new_salesman_is_better(
+            best_salesman, best_time, best_travel_time, travel_time, arrival_time
+        ):
             best_salesman = salesman
             best_time = arrival_time
             best_travel_time = travel_time
 
     return (best_salesman, best_time) if best_salesman else None
 
-def _new_salesman_is_better(best_salesman, best_time, best_travel_time, travel_time, arrival_time):
+
+def _new_salesman_is_better(
+    best_salesman, best_time, best_travel_time, travel_time, arrival_time
+):
     """
     Determine if the new salesman is a better choice based on arrival and travel time.
     """
     if best_salesman is None:
         return True
 
-    significant_delta = timedelta(minutes=10) # TODO - make this a parameter
+    significant_delta = timedelta(minutes=10)  # TODO - make this a parameter
     arrival_time_better = arrival_time <= (best_time - significant_delta)
-    travel_time_better = (arrival_time <= (best_time + significant_delta) and travel_time < best_travel_time)
-    
+    travel_time_better = (
+        arrival_time <= (best_time + significant_delta)
+        and travel_time < best_travel_time
+    )
+
     return arrival_time_better or travel_time_better
 
 

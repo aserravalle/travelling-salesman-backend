@@ -1,6 +1,7 @@
 from datetime import datetime
 from app.models.job import Job
 
+
 def test_job_sorting():
     jobs = [
         Job(
@@ -77,9 +78,16 @@ def test_job_sorting():
         ),
     ]
 
-    jobs.sort(key=lambda job: (job.date, job.entry_time, job.duration_mins, job.exit_time - job.entry_time))
+    jobs.sort(
+        key=lambda job: (
+            job.date,
+            job.entry_time,
+            job.duration_mins,
+            job.exit_time - job.entry_time,
+        )
+    )
 
-    expected_order = ['5', '4', '2', '9', '1', '7', '3', '6', '8']
+    expected_order = ["5", "4", "2", "9", "1", "7", "3", "6", "8"]
     sorted_ids = [job.job_id for job in jobs]
 
     assert (

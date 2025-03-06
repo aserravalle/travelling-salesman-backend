@@ -51,7 +51,12 @@ class Job(BaseModel):
         2. Entry time
         3. Time window duration
         """
-        return (self.date, self.entry_time, self.duration_mins, self.exit_time - self.entry_time) < (
+        return (
+            self.date,
+            self.entry_time,
+            self.duration_mins,
+            self.exit_time - self.entry_time,
+        ) < (
             other.date,
             other.entry_time,
             other.duration_mins,

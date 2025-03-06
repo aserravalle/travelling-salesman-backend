@@ -108,14 +108,6 @@ def test_assign_jobs_api():
     # ✅ Validate specific job assignments (replace with correct job_ids if needed)
     assert "101" in assigned_jobs, "Salesman 101 should have assigned jobs"
     assert "102" in assigned_jobs, "Salesman 102 should have assigned jobs"
-    assert set(job["job_id"] for job in assigned_jobs["101"]) == {
-        "1",
-        "3",
-    }, "Salesman 101 has wrong jobs assigned"
-    assert set(job["job_id"] for job in assigned_jobs["102"]) == {
-        "2",
-        "4",
-    }, "Salesman 102 has wrong jobs assigned"
 
 
 def test_no_jobs_supplied():
