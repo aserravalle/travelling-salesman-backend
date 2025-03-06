@@ -276,3 +276,110 @@ def test_assign_jobs_accounts_for_travel_time_and_entry_time():
     assert start_times[2] == datetime(2025, 2, 5, 12, 0, 0), "Job 3 should start 1:20h later (45 duration + 35 travel time)"
     assert salesman.current_time == datetime(2025, 2, 5, 13, 30, 0), "Salesman should finish 1:30h later (90 duration)"
     assert salesman.time_worked_mins == 265, "Salesman should finish at 13:25"
+
+
+def test_assign_jobs_stress_test():
+
+    with open("tests/data/salesman_test_data.csv", "r") as f:
+        salesmen_lines = f.readlines()
+
+    salesmen = []
+    for line in salesmen_lines[1:]:  # Skip header
+        fields = line.strip().split(",")
+        salesmen.append(
+            Salesman(
+                salesman_id=fields[0],
+                home_location=Location(float(fields[1]), float(fields[2])),
+                start_time=datetime.strptime(fields[3], "%d-%m-%Y %H:%M"),
+                end_time=datetime.strptime(fields[4], "%d-%m-%Y %H:%M"),
+            )
+        )
+
+    with open("tests/data/jobs_test_data.csv", "r") as f:
+        jobs_lines = f.readlines()
+
+    jobs = []
+    for line in jobs_lines[1:]:  # Skip header
+        fields = line.strip().split(",")
+        jobs.append(
+            Job(
+                job_id=fields[0],
+                date=datetime.strptime(fields[1], "%d-%m-%Y %H:%M"),
+                location=Location(float(fields[2]), float(fields[3])),
+                duration_mins=int(fields[4]),
+                entry_time=datetime.strptime(fields[5], "%d-%m-%Y %H:%M"),
+                exit_time=datetime.strptime(fields[6], "%d-%m-%Y %H:%M"),
+            )
+        )
+
+
+    # Call assign_jobs function
+    roster = assign_jobs(jobs, salesmen)
+    assert len(roster.jobs) > 0, "Jobs should be assigned"
+
+
+    # Format roster.jobs as CSV string
+    csv_lines = ["salesman_id,job_id,start_time"]
+    for salesman_id, assigned_jobs in roster.jobs.items():
+        for job in assigned_jobs:
+            csv_lines.append(f"{salesman_id},\t{job.job_id},\t{job.start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+            
+    for job in roster.unassigned_jobs:
+        csv_lines.append(f"NA ,\t{job.job_id}")
+
+    actual = "\n".join(csv_lines)
+
+    expected = """salesman_id,job_id,start_time
+101,	1,	2025-02-05 09:00:00
+101,	37,	2025-02-05 10:45:00
+101,	40,	2025-02-05 12:02:00
+101,	44,	2025-02-05 12:54:00
+101,	14,	2025-02-05 13:47:00
+102,	7,	2025-02-05 09:00:00
+102,	35,	2025-02-05 10:11:00
+102,	12,	2025-02-05 12:40:00
+102,	25,	2025-02-05 13:47:00
+102,	5,	2025-02-05 15:20:00
+103,	32,	2025-02-05 09:00:00
+103,	9,	2025-02-05 10:16:00
+103,	41,	2025-02-05 12:06:00
+103,	45,	2025-02-05 13:19:00
+103,	49,	2025-02-05 14:35:00
+104,	28,	2025-02-05 09:05:00
+104,	36,	2025-02-05 10:18:00
+104,	10,	2025-02-05 11:18:00
+104,	46,	2025-02-05 13:36:00
+104,	17,	2025-02-05 15:12:00
+105,	18,	2025-02-05 09:15:00
+105,	39,	2025-02-05 11:48:00
+105,	15,	2025-02-05 14:16:00
+105,	4,	2025-02-05 15:06:00
+106,	33,	2025-02-05 09:15:00
+106,	20,	2025-02-05 10:45:00
+106,	11,	2025-02-05 11:49:00
+106,	42,	2025-02-05 12:42:00
+106,	48,	2025-02-05 14:26:00
+107,	8,	2025-02-05 09:30:00
+107,	38,	2025-02-05 10:50:00
+107,	43,	2025-02-05 12:40:00
+107,	27,	2025-02-05 15:00:00
+108,	34,	2025-02-05 09:30:00
+108,	31,	2025-02-05 11:16:00
+108,	22,	2025-02-05 12:22:00
+108,	47,	2025-02-05 14:34:00
+109,	29,	2025-02-05 09:35:00
+109,	21,	2025-02-05 11:26:00
+109,	13,	2025-02-05 13:07:00
+109,	16,	2025-02-05 14:49:00
+110,	19,	2025-02-05 09:45:00
+110,	30,	2025-02-05 10:36:00
+110,	23,	2025-02-05 12:45:00
+110,	24,	2025-02-05 13:37:00
+110,	50,	2025-02-05 14:47:00
+NA ,	26
+NA ,	51
+NA ,	2
+NA ,	3
+NA ,	6"""
+
+    assert actual == expected, f"Expected:\n{expected}\n\nActual:\n{actual}"
