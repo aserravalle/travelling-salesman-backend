@@ -29,6 +29,7 @@ class Job(BaseModel):
     exit_time: datetime
     salesman_id: Optional[str] = None
     start_time: Optional[datetime] = None
+    _travel_time_mins: Optional[int] = 0
 
     def assign_salesman_and_start_time(
         self, salesman_id: str, job_start_time: datetime
@@ -50,8 +51,14 @@ class Job(BaseModel):
         2. Entry time
         3. Time window duration
         """
-        return (self.date, self.entry_time, self.exit_time - self.entry_time) < (
+        return (
+            self.date,
+            self.entry_time,
+            self.duration_mins,
+            self.exit_time - self.entry_time,
+        ) < (
             other.date,
             other.entry_time,
+            other.duration_mins,
             other.exit_time - other.entry_time,
         )

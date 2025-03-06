@@ -56,25 +56,45 @@ class Salesman(BaseModel):
         Args:
             job: The job being assigned
         """
+        buffer_time = (
+            job.start_time - self.current_time
+        ).total_seconds() / 60  # time waiting and travelling between jobs
         if self.is_first_job():
             self.start_time = job.start_time
+            buffer_time = 0  # Travel time to first job is not paid
         self.current_location = job.location
         self.current_time = job.start_time + timedelta(minutes=job.duration_mins)
-        self.time_worked_mins += job.duration_mins
+        self.time_worked_mins += job.duration_mins + buffer_time
 
     def is_first_job(self) -> bool:
         """Check if this would be the first job assigned to the salesman."""
         return self.current_time == self.start_time
 
-    def get_arrival_time(self, job: Job) -> datetime:
+    def get_arrival_time(self, job: Job, travel_time: timedelta) -> datetime:
         """
         Calculate the earliest possible arrival time at a job location.
 
         Args:
             job: The job to travel to
+            travel_time: The time it takes to travel to the job location
 
         Returns:
             datetime: Earliest possible arrival time
         """
-        travel_time = self.current_location.travel_time_to(job.location)
-        return max(self.current_time + travel_time, job.entry_time)
+        if self.is_first_job():
+            return max(self.start_time, job.entry_time)
+        else:
+            return max(self.current_time + travel_time, job.entry_time)
+
+    def __lt__(self, other: "Salesman") -> bool:
+        """
+        Compare salesmen by earliest availability
+        current_time where possible or start_time otherwise.
+        """
+        return self.earliest_availability() < other.earliest_availability()
+
+    def earliest_availability(self):
+        if self.current_time:
+            return self.current_time
+        else:
+            return self.start_time

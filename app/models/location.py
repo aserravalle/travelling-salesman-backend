@@ -39,7 +39,7 @@ class Location(NamedTuple):
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         distance = R * c
 
-        kmph = 10  # Assume walking speed of 10kmph
+        kmph = 10  # Assume walking speed of 10kmph  # TODO - make this a parameter
         hours = distance / kmph
         minutes = int(hours * 60)
 

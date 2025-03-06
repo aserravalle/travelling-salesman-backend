@@ -35,6 +35,7 @@ class RosterResponse(BaseModel):
         """
         salesman.current_location = salesman.home_location
         salesman.current_time = salesman.start_time
+        salesman.time_worked_mins = 0
         self.jobs[salesman.salesman_id] = []
 
     def assign_job_to_salesman(

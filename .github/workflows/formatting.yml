@@ -22,7 +22,7 @@ jobs:
 
     - name: Check Formatting with Black
       run: |
-        black .
+        black . --check
 
     - name: Run Flake8
       run: |

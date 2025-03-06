@@ -60,19 +60,44 @@ def _find_best_salesman(
     """
     best_salesman = None
     best_time = None
+    best_travel_time = None
+    salesmen = sorted(salesmen)
 
     for salesman in salesmen:
-        arrival_time = salesman.get_arrival_time(job)
+        travel_time = salesman.current_location.travel_time_to(job.location)
+        arrival_time = salesman.get_arrival_time(job, travel_time)
         completion_time = arrival_time + timedelta(minutes=job.duration_mins)
 
         if not salesman.can_complete_job_in_time(job.exit_time, completion_time):
             continue
 
-        if best_salesman is None or arrival_time < best_time:
+        if _new_salesman_is_better(
+            best_salesman, best_time, best_travel_time, travel_time, arrival_time
+        ):
             best_salesman = salesman
             best_time = arrival_time
+            best_travel_time = travel_time
 
     return (best_salesman, best_time) if best_salesman else None
+
+
+def _new_salesman_is_better(
+    best_salesman, best_time, best_travel_time, travel_time, arrival_time
+):
+    """
+    Determine if the new salesman is a better choice based on arrival and travel time.
+    """
+    if best_salesman is None:
+        return True
+
+    significant_delta = timedelta(minutes=10)  # TODO - make this a parameter
+    arrival_time_better = arrival_time <= (best_time - significant_delta)
+    travel_time_better = (
+        arrival_time <= (best_time + significant_delta)
+        and travel_time < best_travel_time
+    )
+
+    return arrival_time_better or travel_time_better
 
 
 def _generate_roster_message(roster: RosterResponse) -> str:

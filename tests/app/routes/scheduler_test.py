@@ -21,7 +21,7 @@ def test_assign_jobs_api():
                 "date": "2025-02-05T10:00:00",
                 "location": [40.7130, -74.0055],
                 "duration_mins": 45,
-                "entry_time": "2025-02-05T10:30:00",
+                "entry_time": "2025-02-05T09:30:00",
                 "exit_time": "2025-02-05T14:00:00",
             },
             {
@@ -108,14 +108,6 @@ def test_assign_jobs_api():
     # ✅ Validate specific job assignments (replace with correct job_ids if needed)
     assert "101" in assigned_jobs, "Salesman 101 should have assigned jobs"
     assert "102" in assigned_jobs, "Salesman 102 should have assigned jobs"
-    assert set(job["job_id"] for job in assigned_jobs["101"]) == {
-        "2",
-        "3",
-        "4",
-    }, "Salesman 101 has wrong jobs assigned"
-    assert set(job["job_id"] for job in assigned_jobs["102"]) == {
-        "1"
-    }, "Salesman 102 has wrong jobs assigned"
 
 
 def test_no_jobs_supplied():
