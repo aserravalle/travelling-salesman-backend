@@ -12,7 +12,9 @@ def test_travel_time_to():
     loc_a = Location(34.0522, -118.2437)
     loc_b = Location(35.0522, -119.2437)
     travel_time = loc_a.travel_time_to(loc_b)
-    assert travel_time == timedelta(minutes=864), "Locations are progressively more distant 1"
+    assert travel_time == timedelta(
+        minutes=864
+    ), "Locations are progressively more distant 1"
 
     loc_b = Location(36.0522, -120.2437)
     travel_time = loc_a.travel_time_to(loc_b)
