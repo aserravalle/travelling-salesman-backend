@@ -5,6 +5,7 @@ import numpy as np
 
 from app.models.job import Job
 from app.models.roster import RosterResponse
+from app.models.roster import RosterResponse
 from app.models.salesman import Salesman
 
 
