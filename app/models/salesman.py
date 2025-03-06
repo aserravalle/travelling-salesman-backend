@@ -70,23 +70,21 @@ class Salesman(BaseModel):
         """Check if this would be the first job assigned to the salesman."""
         return self.current_time == self.start_time
 
-    def get_arrival_time(self, job: Job) -> datetime:
+    def get_arrival_time(self, job: Job, travel_time: timedelta) -> datetime:
         """
         Calculate the earliest possible arrival time at a job location.
 
         Args:
             job: The job to travel to
+            travel_time: The time it takes to travel to the job location
 
         Returns:
             datetime: Earliest possible arrival time
         """
         if self.is_first_job():
-            salesman_arrival_time = self.start_time
+            return max(self.start_time, job.entry_time)
         else:
-            travel_time = self.current_location.travel_time_to(job.location)
-            salesman_arrival_time = self.current_time + travel_time
-
-        return max(salesman_arrival_time, job.entry_time)
+            return max(self.current_time + travel_time, job.entry_time)
 
     def __lt__(self, other: "Salesman") -> bool:
         """

@@ -10,3 +10,7 @@ router = APIRouter()
 def assign_jobs_endpoint(request: RosterRequest) -> RosterResponse:
     roster = assign_jobs(request.jobs, request.salesmen)
     return roster.model_dump()
+
+@router.get("/assign_jobs")
+def assign_jobs_endpoint() -> str:
+    return "assign_jobs works"
