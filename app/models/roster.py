@@ -1,8 +1,8 @@
+from pydantic import BaseModel
 from datetime import datetime
 from typing import Dict, List, Optional
 from pydantic import Field
 
-from app.models.base_model import BaseModel
 from app.models.job import Job
 from app.models.salesman import Salesman
 

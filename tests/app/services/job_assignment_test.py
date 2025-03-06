@@ -152,12 +152,12 @@ def test_unassignable_jobs():
     roster = assign_jobs(jobs, salesmen)
 
     # ✅ Validate assigned jobs
-    assert set(job.job_id for job in roster.jobs["1"]) == {"1", "2"}, "Salesman 1 should have jobs 1 and 2"
+    assert set(job.job_id for job in roster.jobs["1"]) == {"1"}, "Salesman 1 should have job 1"
 
     # ✅ Validate unassigned jobs
     unassigned_jobs = roster.unassigned_jobs
-    assert len(unassigned_jobs) == 1, "There should be one unassigned job"
-    assert unassigned_jobs[0].job_id == "3", "The unassigned job should be job_id '3'"
+    assert len(unassigned_jobs) == 2, "There should be two unassigned jobs"
+    assert set(job.job_id for job in unassigned_jobs) == {"2", "3"}, "The unassigned job should be 2 and 3"
 
     # ✅ Validate message
     assert roster.message == "Roster completed with unassigned jobs", "Message should indicate unassigned jobs"

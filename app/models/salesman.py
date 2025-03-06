@@ -39,11 +39,9 @@ class Salesman(BaseModel):
         Returns:
             bool: True if job can be completed within constraints
         """
-        if completion_time > min(self.end_time, job_exit_time):
-            return False
-            
-        total_work_mins = (completion_time - self.start_time).total_seconds() / 60
-        return total_work_mins <= self.max_workday_mins
+        job_finished_in_time = completion_time <= min(self.end_time, job_exit_time)
+        salesman_exceeds_max_hours = (completion_time - self.start_time) > timedelta(minutes=self.max_workday_mins)
+        return job_finished_in_time and not salesman_exceeds_max_hours
 
     def assign_to_salesman(self, job: Job) -> None:
         """
@@ -58,6 +56,10 @@ class Salesman(BaseModel):
         self.current_time = job.start_time + timedelta(minutes=job.duration_mins)
         self.time_worked_mins += job.duration_mins
 
+    def is_first_job(self) -> bool:
+        """Check if this would be the first job assigned to the salesman."""
+        return self.current_time == self.start_time
+
     def get_arrival_time(self, job: Job) -> datetime:
         """
         Calculate the earliest possible arrival time at a job location.
@@ -70,7 +72,3 @@ class Salesman(BaseModel):
         """
         travel_time = self.current_location.travel_time_to(job.location)
         return max(self.current_time + travel_time, job.entry_time)
-
-    def is_first_job(self) -> bool:
-        """Check if this would be the first job assigned to the salesman."""
-        return self.current_time == self.start_time
