@@ -1,5 +1,5 @@
 from datetime import date, datetime, timedelta
-from app.models.roster import Roster
+from app.models.roster import RosterResponse
 from app.models.job import Job
 from app.models.salesman import Salesman
 from app.models.location import Location
@@ -20,7 +20,7 @@ def test_assign_first_job_to_salesman():
         entry_time=datetime(2025, 2, 5, 10, 0, 0),
         exit_time=datetime(2025, 2, 5, 14, 0, 0),
     )
-    roster = Roster(roster_id="1", date=date(2025, 2, 5))
+    roster = RosterResponse(roster_id="1", date=date(2025, 2, 5))
     roster.add_salesman(sman)
 
     job_start_time = datetime(2025, 2, 5, 10, 0, 0)
@@ -60,7 +60,7 @@ def test_assign_multiple_jobs_to_salesman():
         entry_time=datetime(2025, 2, 5, 11, 0, 0),
         exit_time=datetime(2025, 2, 5, 15, 0, 0),
     )
-    roster = Roster(roster_id="1", date=date(2025, 2, 5))
+    roster = RosterResponse(roster_id="1", date=date(2025, 2, 5))
     roster.add_salesman(sman)
 
     job1_start_time = datetime(2025, 2, 5, 10, 0, 0)
