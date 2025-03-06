@@ -24,6 +24,9 @@ class Location(NamedTuple):
         Returns:
             Estimated travel time as timedelta
         """
+        self.validate_coordinates()
+        other.validate_coordinates()
+
         R = 6371  # Earth's radius in kilometers
 
         lat1, lon1 = radians(self.latitude), radians(self.longitude)
@@ -41,3 +44,13 @@ class Location(NamedTuple):
         minutes = int(hours * 60)
 
         return timedelta(minutes=minutes)
+
+    def validate_coordinates(self):
+        if not (-90 <= self.latitude <= 90):
+            raise ValueError(
+                f"Invalid latitude value: {self.latitude}. Must be between -90 and 90."
+            )
+        if not (-180 <= self.longitude <= 180):
+            raise ValueError(
+                f"Invalid longitude value: {self.longitude}. Must be between -180 and 180."
+            )
