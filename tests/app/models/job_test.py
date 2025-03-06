@@ -50,4 +50,6 @@ def test_job_sorting():
     expected_order = ["3", "4", "2", "1"]  # IDs in the expected sorted order
     sorted_ids = [job.job_id for job in jobs]
 
-    assert sorted_ids == expected_order, f"Expected order {expected_order}, but got {sorted_ids}"
+    assert (
+        sorted_ids == expected_order
+    ), f"Expected order {expected_order}, but got {sorted_ids}"

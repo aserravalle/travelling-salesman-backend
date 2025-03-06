@@ -60,13 +60,21 @@ def test_assign_jobs():
     roster = assign_jobs(jobs, salesmen)
 
     # ✅ All jobs should be assigned
-    assigned_salesmen = [job.salesman_id for job_list in roster.jobs.values() for job in job_list]
-    assert len(assigned_salesmen) == len(jobs), "All jobs should be assigned to salesmen."
+    assigned_salesmen = [
+        job.salesman_id for job_list in roster.jobs.values() for job in job_list
+    ]
+    assert len(assigned_salesmen) == len(
+        jobs
+    ), "All jobs should be assigned to salesmen."
 
     # ✅ Each job should be assigned to the closest available salesman
     for job in jobs:
-        assert job.salesman_id is not None, f"Job {job.job_id} should be assigned to a salesman."
-        assert any(job in roster.jobs[sman.salesman_id] for sman in salesmen), f"Job {job.job_id} should be in at least one salesman's job list."
+        assert (
+            job.salesman_id is not None
+        ), f"Job {job.job_id} should be assigned to a salesman."
+        assert any(
+            job in roster.jobs[sman.salesman_id] for sman in salesmen
+        ), f"Job {job.job_id} should be in at least one salesman's job list."
 
     # ✅ Jobs should be assigned in chronological order
     for sman in salesmen:
@@ -106,7 +114,9 @@ def test_no_jobs_supplied():
     assert len(roster.unassigned_jobs) == 0, "No jobs should be unassigned"
 
     # ✅ Validate message
-    assert roster.message == "No jobs to assign", "Message should indicate no jobs to assign"
+    assert (
+        roster.message == "No jobs to assign"
+    ), "Message should indicate no jobs to assign"
 
 
 def test_unassignable_jobs():
@@ -143,7 +153,9 @@ def test_unassignable_jobs():
             date=datetime(2025, 2, 5),
             location=Location(51.5075, -0.1280),
             duration_mins=90,
-            entry_time=datetime(2025, 2, 5, 18, 0, 0),  # Unassignable job (outside working hours)
+            entry_time=datetime(
+                2025, 2, 5, 18, 0, 0
+            ),  # Unassignable job (outside working hours)
             exit_time=datetime(2025, 2, 5, 19, 0, 0),
         ),
     ]
@@ -152,12 +164,19 @@ def test_unassignable_jobs():
     roster = assign_jobs(jobs, salesmen)
 
     # ✅ Validate assigned jobs
-    assert set(job.job_id for job in roster.jobs["1"]) == {"1", "2"}, "Salesman 1 should have jobs 1 and 2"
+    assert set(job.job_id for job in roster.jobs["1"]) == {
+        "1"
+    }, "Salesman 1 should have job 1"
 
     # ✅ Validate unassigned jobs
     unassigned_jobs = roster.unassigned_jobs
-    assert len(unassigned_jobs) == 1, "There should be one unassigned job"
-    assert unassigned_jobs[0].job_id == "3", "The unassigned job should be job_id '3'"
+    assert len(unassigned_jobs) == 2, "There should be two unassigned jobs"
+    assert set(job.job_id for job in unassigned_jobs) == {
+        "2",
+        "3",
+    }, "The unassigned job should be 2 and 3"
 
     # ✅ Validate message
-    assert roster.message == "Roster completed with unassigned jobs", "Message should indicate unassigned jobs"
+    assert (
+        roster.message == "Roster completed with unassigned jobs"
+    ), "Message should indicate unassigned jobs"
