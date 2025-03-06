@@ -1,21 +1,21 @@
 from typing import List
-from datetime import timedelta
-from sklearn.cluster import KMeans
-import numpy as np
+from datetime import datetime, timedelta
 
 from app.models.job import Job
-from app.models.roster import RosterResponse
 from app.models.roster import RosterResponse
 from app.models.salesman import Salesman
 
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
     """
-    Assign jobs to salesmen optimally based on location and time constraints using K-Means clustering.
+    Assign jobs to salesmen optimally based on location and time constraints.
 
     The algorithm:
-    1. Clusters jobs based on location using K-Means
-    2. Assigns jobs to salesmen by cluster
+    1. Sorts jobs by date and time
+    2. For each job, finds the best available salesman based on:
+       - Travel time to job location
+       - Available working hours
+       - Maximum working day constraints
 
     Args:
         jobs: List of jobs to assign
@@ -24,53 +24,55 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
     Returns:
         Roster: Complete roster with job assignments and status
     """
-    if not jobs:
-        roster = RosterResponse()
-        roster.add_salesmen(salesmen)
-        roster.message = "No jobs to assign"
-        return roster
-
-    # Convert job locations to numpy array for clustering
-    job_locations = np.array([[job.location[0], job.location[1]] for job in jobs])
-
-    # Determine the number of clusters (e.g., number of salesmen)
-    num_clusters = len(salesmen)
-
-    # Perform K-Means clustering
-    kmeans = KMeans(n_clusters=num_clusters, random_state=0).fit(job_locations)
-    job_clusters = kmeans.labels_
-
-    # Create a roster response
+    jobs = sorted(jobs)
     roster = RosterResponse()
     roster.add_salesmen(salesmen)
 
-    # Assign jobs to salesmen by cluster
-    for cluster_idx in range(num_clusters):
-        cluster_jobs = [jobs[i] for i in range(len(jobs)) if job_clusters[i] == cluster_idx]
-        if cluster_jobs:
-            assign_jobs_to_salesman(cluster_jobs, salesmen[cluster_idx], roster)
+    if not jobs:
+        roster.message = "No jobs to assign"
+        return roster
+
+    for job in jobs:
+        best_assignment = _find_best_salesman(job, salesmen)
+
+        if best_assignment:
+            salesman, start_time = best_assignment
+            roster.assign_job_to_salesman(job, salesman, start_time)
+        else:
+            roster.unassigned_jobs.append(job)
 
     roster.message = _generate_roster_message(roster)
     return roster
 
 
-def assign_jobs_to_salesman(jobs: List[Job], salesman: Salesman, roster: RosterResponse):
+def _find_best_salesman(
+    job: Job, salesmen: List[Salesman]
+) -> tuple[Salesman, datetime] | None:
     """
-    Assign jobs to a specific salesman based on availability and location.
+    Find the best salesman for a job based on availability and location.
 
     Args:
-        jobs: List of jobs to assign
-        salesman: Salesman to assign jobs to
-        roster: Roster to update with job assignments
+        job: Job to assign
+        salesmen: List of available salesmen
+
+    Returns:
+        tuple: (best_salesman, start_time) or None if no suitable salesman found
     """
-    for job in sorted(jobs, key=lambda x: x.date):
+    best_salesman = None
+    best_time = None
+
+    for salesman in salesmen:
         arrival_time = salesman.get_arrival_time(job)
         completion_time = arrival_time + timedelta(minutes=job.duration_mins)
 
-        if salesman.can_complete_job_in_time(job.exit_time, completion_time):
-            roster.assign_job_to_salesman(job, salesman, arrival_time)
-        else:
-            roster.unassigned_jobs.append(job)
+        if not salesman.can_complete_job_in_time(job.exit_time, completion_time):
+            continue
+
+        if best_salesman is None or arrival_time < best_time:
+            best_salesman = salesman
+            best_time = arrival_time
+
+    return (best_salesman, best_time) if best_salesman else None
 
 
 def _generate_roster_message(roster: RosterResponse) -> str:

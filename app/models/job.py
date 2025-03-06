@@ -29,6 +29,7 @@ class Job(BaseModel):
     exit_time: datetime
     salesman_id: Optional[str] = None
     start_time: Optional[datetime] = None
+    _travel_time_mins: Optional[int] = 0
 
     def assign_salesman_and_start_time(
         self, salesman_id: str, job_start_time: datetime

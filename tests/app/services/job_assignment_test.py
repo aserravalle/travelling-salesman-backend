@@ -180,3 +180,99 @@ def test_unassignable_jobs():
     assert (
         roster.message == "Roster completed with unassigned jobs"
     ), "Message should indicate unassigned jobs"
+
+
+
+def test_assign_jobs_accounts_for_travel_time():
+    # One salesman available 9-5
+    salesman = Salesman(
+        salesman_id="101",
+        home_location=Location(34.0522, -118.2437),
+        start_time=datetime(2025, 2, 5, 9, 0, 0),
+        end_time=datetime(2025, 2, 5, 17, 0, 0),
+    )
+
+    jobs = [
+        Job(
+            job_id="1",
+            date=datetime(2025, 2, 5),
+            location=Location(34.0000, -118.2500),
+            duration_mins=60,
+            entry_time=datetime(2025, 2, 5, 9, 0, 0),
+            exit_time=datetime(2025, 2, 5, 17, 0, 0),
+        ),
+        Job(
+            job_id="2",
+            date=datetime(2025, 2, 5),
+            location=Location(34.0522, -118.2437),
+            duration_mins=45,
+            entry_time=datetime(2025, 2, 5, 9, 1, 0), # 1 minute after job 1
+            exit_time=datetime(2025, 2, 5, 17, 0, 0),
+        ),
+        Job(
+            job_id="3",
+            date=datetime(2025, 2, 5),
+            location=Location(34.0000, -118.2500),
+            duration_mins=90,
+            entry_time=datetime(2025, 2, 5, 9, 2, 0), # 1 minute after job 2
+            exit_time=datetime(2025, 2, 5, 17, 0, 0),
+        ),
+    ]
+
+    roster = assign_jobs(jobs, [salesman])
+
+    start_times = [job.start_time for job in roster.jobs["101"]]
+    assert len(start_times) == 3, "All jobs should be assigned"
+    assert start_times[0] == datetime(2025, 2, 5, 9, 0, 0), "Job 1 should start at entry_time (9:00)"
+    assert start_times[1] == datetime(2025, 2, 5, 10, 35, 0), "Job 2 should start 1:35h later (60 duration + 35 travel time)"
+    assert start_times[2] == datetime(2025, 2, 5, 11, 55, 0), "Job 3 should start 1:20h later (45 duration + 35 travel time)"
+    assert salesman.current_time == datetime(2025, 2, 5, 13, 25, 0), "Salesman should finish 1:30h later (90 duration)"
+    assert salesman.time_worked_mins == 265, "Salesman should finish at 13:25"
+
+
+
+def test_assign_jobs_accounts_for_travel_time_and_entry_time():
+    # One salesman available 9-5
+    salesman = Salesman(
+        salesman_id="101",
+        home_location=Location(34.0522, -118.2437),
+        start_time=datetime(2025, 2, 5, 9, 0, 0),
+        end_time=datetime(2025, 2, 5, 17, 0, 0),
+    )
+
+    jobs = [
+        Job(
+            job_id="1",
+            date=datetime(2025, 2, 5),
+            location=Location(34.0000, -118.2500),
+            duration_mins=60,
+            entry_time=datetime(2025, 2, 5, 9, 5, 0), # 5 minutes after salesman start time
+            exit_time=datetime(2025, 2, 5, 17, 0, 0),
+        ),
+        Job(
+            job_id="2",
+            date=datetime(2025, 2, 5),
+            location=Location(34.0522, -118.2437),
+            duration_mins=45,
+            entry_time=datetime(2025, 2, 5, 9, 6, 0), # 1 minute after job 1
+            exit_time=datetime(2025, 2, 5, 17, 0, 0),
+        ),
+        Job(
+            job_id="3",
+            date=datetime(2025, 2, 5),
+            location=Location(34.0000, -118.2500),
+            duration_mins=90,
+            entry_time=datetime(2025, 2, 5, 9, 7, 0), # 1 minute after job 2
+            exit_time=datetime(2025, 2, 5, 17, 0, 0),
+        )
+    ]
+
+    roster = assign_jobs(jobs, [salesman])
+
+    start_times = [job.start_time for job in roster.jobs["101"]]
+    assert len(start_times) == 3, "3 jobs should be assigned"
+    assert start_times[0] == datetime(2025, 2, 5, 9, 5, 0), "Job 1 should start at entry_time (9:05)"
+    assert start_times[1] == datetime(2025, 2, 5, 10, 40, 0), "Job 2 should start 1:35h later (60 duration + 35 travel time)"
+    assert start_times[2] == datetime(2025, 2, 5, 12, 0, 0), "Job 3 should start 1:20h later (45 duration + 35 travel time)"
+    assert salesman.current_time == datetime(2025, 2, 5, 13, 30, 0), "Salesman should finish 1:30h later (90 duration)"
+    assert salesman.time_worked_mins == 265, "Salesman should finish at 13:25"
