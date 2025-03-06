@@ -59,7 +59,7 @@ class Salesman(BaseModel):
         buffer_time = (job.start_time - self.current_time).total_seconds() / 60 # time waiting and travelling between jobs
         if self.is_first_job():
             self.start_time = job.start_time
-            buffer_time = 0
+            buffer_time = 0 # Travel time to first job is not paid
         self.current_location = job.location
         self.current_time = job.start_time + timedelta(minutes=job.duration_mins)
         self.time_worked_mins += job.duration_mins + buffer_time
@@ -85,3 +85,19 @@ class Salesman(BaseModel):
             salesman_arrival_time = self.current_time + travel_time
         
         return max(salesman_arrival_time, job.entry_time)
+
+
+    def __lt__(self, other: "Salesman") -> bool:
+        """
+        Compare salesmen for sorting by:
+        1. Date
+        2. Entry time
+        3. Time window duration
+        """
+        return self.earliest_availability() < other.earliest_availability()
+
+    def earliest_availability(self):
+        if self.current_time:
+            return self.current_time
+        else:
+            return self.start_time

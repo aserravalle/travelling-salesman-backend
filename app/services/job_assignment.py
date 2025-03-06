@@ -60,6 +60,7 @@ def _find_best_salesman(
     """
     best_salesman = None
     best_time = None
+    salesmen = sorted(salesmen)
 
     for salesman in salesmen:
         arrival_time = salesman.get_arrival_time(job)

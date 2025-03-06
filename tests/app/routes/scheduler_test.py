@@ -111,10 +111,10 @@ def test_assign_jobs_api():
     assert set(job["job_id"] for job in assigned_jobs["101"]) == {
         "1",
         "3",
-        "4",
     }, "Salesman 101 has wrong jobs assigned"
     assert set(job["job_id"] for job in assigned_jobs["102"]) == {
-        "2"
+        "2",
+        "4",
     }, "Salesman 102 has wrong jobs assigned"
 
 
