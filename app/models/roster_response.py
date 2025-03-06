@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 from pydantic import Field
 
 from app.models.job import Job
+from app.models.roster_daily import RosterDaily
 from app.models.salesman import Salesman
 
 
@@ -12,12 +13,12 @@ class RosterResponse(BaseModel):
     Represents a daily roster of job assignments to salesmen.
 
     Attributes:
-        jobs: Dictionary mapping salesman IDs to their assigned jobs
+        roster_daily: Dictionary mapping salesman IDs to their assigned jobs
         unassigned_jobs: List of jobs that couldn't be assigned
         message: Status message about the roster creation
     """
 
-    jobs: Dict[str, List[Job]] = Field(default_factory=dict)
+    roster_daily: RosterDaily = Field(default_factory=RosterDaily)
     unassigned_jobs: List[Job] = Field(default_factory=list)
     message: Optional[str] = None
 

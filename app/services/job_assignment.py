@@ -2,7 +2,7 @@ from typing import List
 from datetime import datetime, timedelta
 
 from app.models.job import Job
-from app.models.roster import RosterResponse
+from app.models.roster_daily import RosterResponse
 from app.models.salesman import Salesman
 
 

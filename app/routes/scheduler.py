@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.models.roster import RosterResponse
+from app.models.roster_daily import RosterResponse
 from app.models.roster_request import RosterRequest
 from app.services.job_assignment import assign_jobs
 
