@@ -39,7 +39,7 @@ def test_assign_jobs_api():
                 "duration_mins": 90,
                 "entry_time": "2025-02-05T12:30:00",
                 "exit_time": "2025-02-05T15:00:00",
-            },
+            }
         ],
         "salesmen": [
             {
@@ -53,8 +53,8 @@ def test_assign_jobs_api():
                 "home_location": [40.750610, -73.975242],
                 "start_time": "2025-02-05T09:00:00",
                 "end_time": "2025-02-05T17:00:00",
-            },
-        ],
+            }
+        ]
     }
 
     # Send request to API
