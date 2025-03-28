@@ -98,7 +98,7 @@ Assigns jobs to salesmen optimally.
     {
       "job_id": "string",
       "date": "datetime",
-      "location": [float, float],
+      "location": { "latitude": float, "latitude": float, "address": string},
       "duration_mins": int,
       "entry_time": "datetime",
       "exit_time": "datetime"
@@ -107,7 +107,7 @@ Assigns jobs to salesmen optimally.
   "salesmen": [
     {
       "salesman_id": "string",
-      "home_location": [float, float],
+      "location": { "latitude": float, "latitude": float, "address": string},
       "start_time": "datetime",
       "end_time": "datetime"
     }
