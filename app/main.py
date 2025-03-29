@@ -13,14 +13,12 @@ app = FastAPI(
 )
 
 # allow_origins = os.getenv("ALLOW_ORIGINS", "http://localhost:8080").split(",")
-allow_origins = ["*"]  # Allow all origins during development
+allow_origins = ["*"]  # Allow all
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods
-    allow_headers=["*"],  # Allow all headers
 )
 
 app.include_router(scheduler.router)

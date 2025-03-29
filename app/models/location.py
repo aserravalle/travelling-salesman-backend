@@ -7,7 +7,7 @@ from math import radians, sin, cos, sqrt, atan2
 def get_coordinates_from_address(address: str) -> tuple[float, float]:
     """
     Placeholder function to get coordinates from address.
-    Currently returns (0, 0) - to be implemented with geocoding service.
+    To be implemented with geocoding service.
     """
     return (39.473800, -0.375600) # Valencia, Spain
 
@@ -29,21 +29,18 @@ class Location(BaseModel):
         Validates that either both coordinates are provided or address is provided.
         If only address is provided, generates coordinates.
         """
-        has_latitude = self.latitude is not None
-        has_longitude = self.longitude is not None
-        has_address = self.address is not None
 
-        # Both coordinates must be present if either is present
-        if has_latitude != has_longitude:
-            raise ValueError("Both latitude and longitude must be provided together")
+        # If either coordinate is missing ensure both are missing
+        if self.latitude is None or self.longitude is None:
+            self.latitude = None
+            self.longitude = None
 
-        # If no coordinates but address is present, generate coordinates
-        if not has_latitude and has_address:
-            self.latitude, self.longitude = get_coordinates_from_address(self.address)
+            # If no coordinates but address is present, generate coordinates
+            if self.address is not None:
+                self.latitude, self.longitude = get_coordinates_from_address(self.address)
+            else:
+                raise ValueError("Either coordinates or address must be provided")
         
-        # Must have either coordinates or address
-        if not has_latitude and not has_address:
-            raise ValueError("Either coordinates or address must be provided")
 
         return self
     
@@ -55,9 +52,7 @@ class Location(BaseModel):
 
     def travel_time_to(self, other: 'Location') -> timedelta:
         """
-        Calculate travel time between two locations using Haversine formula.
-        Returns a rough estimate based on straight-line distance.
-
+        Calculate travel time between two locations
         Args:
             other: Destination location
 
@@ -66,21 +61,5 @@ class Location(BaseModel):
         """
         if self.is_same_location_as(other):
             return timedelta(minutes=0)
-
-        # R = 6371  # Earth's radius in kilometers
-
-        # lat1, lon1 = radians(self.latitude), radians(self.longitude)
-        # lat2, lon2 = radians(other.latitude), radians(other.longitude)
-
-        # dlat = lat2 - lat1
-        # dlon = lon2 - lon1
-
-        # a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-        # c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        # distance = R * c
-
-        # kmph = 5  # Assumed walking speed # TODO - make this a parameter
-        # hours = distance / kmph
-        # minutes = int(hours * 60)
 
         return timedelta(minutes=20)

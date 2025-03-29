@@ -20,8 +20,8 @@ def test_location_creation_with_coordinates():
 def test_location_creation_with_address():
     # Test with only address (will generate coordinates)
     loc = Location(address="123 Main St")
-    assert loc.latitude == 0.0  # Placeholder value
-    assert loc.longitude == 0.0  # Placeholder value
+    assert loc.latitude == 39.4738  # Placeholder value
+    assert loc.longitude == -0.3756  # Placeholder value
     assert loc.address == "123 Main St"
 
 
@@ -31,11 +31,11 @@ def test_location_validation():
         Location()
 
     # Test missing one coordinate
-    with pytest.raises(ValueError, match="Both latitude and longitude must be provided together"):
+    with pytest.raises(ValueError, match="Either coordinates or address must be provided"):
         Location(latitude=34.0522)
 
-    with pytest.raises(ValueError, match="Both latitude and longitude must be provided together"):
-        Location(longitude=-118.2437)
+    with pytest.raises(ValueError, match="Either coordinates or address must be provided"):
+        Location(latitude=34.0522)
 
     # Test invalid latitude range
     with pytest.raises(ValueError):

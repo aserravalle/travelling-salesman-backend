@@ -11,7 +11,7 @@ def test_assign_jobs_api():
             {
                 "job_id": "1",
                 "date": "2025-02-05 00:00:00",
-                "location": { "latitude": 40.7128, "longitude": -74.0060, "address": "123 Main St" },
+                "location": { "latitude": 40.7128, "longitude": -74.0060 },
                 "duration_mins": 60,
                 "entry_time": "2025-02-05 09:00:00",
                 "exit_time": "2025-02-05 12:00:00",
@@ -19,7 +19,7 @@ def test_assign_jobs_api():
             {
                 "job_id": "2",
                 "date": "2025-02-05 00:00:00",
-                "location": { "latitude": 40.7130, "longitude": -74.0055, "address": "456 Oak Ave" },
+                "location": { "latitude": 40.7130, "longitude": -74.0055 },
                 "duration_mins": 45,
                 "entry_time": "2025-02-05 09:30:00",
                 "exit_time": "2025-02-05 14:00:00",
@@ -27,7 +27,7 @@ def test_assign_jobs_api():
             {
                 "job_id": "3",
                 "date": "2025-02-05 00:00:00",
-                "location": { "latitude": 40.7140, "longitude": -74.0050, "address": "789 Pine Rd" },
+                "location": { "address": "789 Pine Rd" },
                 "duration_mins": 30,
                 "entry_time": "2025-02-05 11:30:00",
                 "exit_time": "2025-02-05 13:00:00",
@@ -35,7 +35,7 @@ def test_assign_jobs_api():
             {
                 "job_id": "4",
                 "date": "2025-02-05 00:00:00",
-                "location": { "latitude": 40.7150, "longitude": -74.0045, "address": "321 Elm St" },
+                "location": { "address": "321 Elm St" },
                 "duration_mins": 90,
                 "entry_time": "2025-02-05 12:30:00",
                 "exit_time": "2025-02-05 15:00:00",
@@ -44,13 +44,13 @@ def test_assign_jobs_api():
         "salesmen": [
             {
                 "salesman_id": "101",
-                "location": { "latitude": 40.730610, "longitude": -73.935242, "address": "101 Home" },
+                "location": { "latitude": 40.730610, "longitude": -73.935242 },
                 "start_time": "2025-02-05 09:00:00",
                 "end_time": "2025-02-05 17:00:00",
             },
             {
                 "salesman_id": "102",
-                "location": { "latitude": 40.750610, "longitude": -73.975242, "address": "102 Home" },
+                "location": { "address": "102 Home" },
                 "start_time": "2025-02-05 09:00:00",
                 "end_time": "2025-02-05 17:00:00",
             }
