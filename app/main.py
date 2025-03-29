@@ -16,16 +16,21 @@ app = FastAPI(
 origins = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
-    os.getenv("ALLOW_ORIGINS", "").strip('"').split(","),  # Get production URL from .env and remove quotes
 ]
 
+# Add production URLs from environment variable
+env_origins = os.getenv("ALLOW_ORIGINS", "").strip('"').split(",")
+origins.extend(env_origins)
+
 # Filter out empty strings from origins
-origins = [origin for origin in origins if origin]
+origins = [origin.strip() for origin in origins if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(scheduler.router)
