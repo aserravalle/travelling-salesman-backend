@@ -8,14 +8,14 @@ from app.models.location import Location
 def test_assign_first_job_to_salesman():
     sman = Salesman(
         salesman_id="1",
-        home_location=Location(40.730610, -73.935242),
+        location=Location(latitude=40.730610, longitude=-73.935242),
         start_time=datetime(2025, 2, 5, 9, 0, 0),
         end_time=datetime(2025, 2, 5, 17, 0, 0),
     )
     job = Job(
         job_id="1",
         date=datetime(2025, 2, 5),
-        location=Location(40.7128, -74.0060),
+        location=Location(latitude=40.7128, longitude=-74.0060),
         duration_mins=60,
         entry_time=datetime(2025, 2, 5, 10, 0, 0),
         exit_time=datetime(2025, 2, 5, 14, 0, 0),
@@ -46,14 +46,14 @@ def test_assign_first_job_to_salesman():
 def test_assign_multiple_jobs_to_salesman():
     sman = Salesman(
         salesman_id="2",
-        home_location=Location(34.0522, -118.2437),
+        location=Location(latitude=34.0522, longitude=-118.2437),
         start_time=datetime(2025, 2, 5, 9, 0, 0),
         end_time=datetime(2025, 2, 5, 17, 0, 0),
     )
     job1 = Job(
         job_id="1",
         date=datetime(2025, 2, 5),
-        location=Location(34.0522, -118.2437),
+        location=Location(latitude=34.0522, longitude=-118.2437),
         duration_mins=45,
         entry_time=datetime(2025, 2, 5, 10, 0, 0),
         exit_time=datetime(2025, 2, 5, 14, 0, 0),
@@ -61,7 +61,7 @@ def test_assign_multiple_jobs_to_salesman():
     job2 = Job(
         job_id="2",
         date=datetime(2025, 2, 5),
-        location=Location(34.0000, -118.2500),
+        location=Location(latitude=34.0000, longitude=-118.2500),
         duration_mins=30,
         entry_time=datetime(2025, 2, 5, 11, 0, 0),
         exit_time=datetime(2025, 2, 5, 15, 0, 0),
