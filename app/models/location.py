@@ -9,7 +9,7 @@ def get_coordinates_from_address(address: str) -> tuple[float, float]:
     Placeholder function to get coordinates from address.
     Currently returns (0, 0) - to be implemented with geocoding service.
     """
-    return (0.0, 0.0)
+    return (39.473800, -0.375600) # Valencia, Spain
 
 
 class Location(BaseModel):
