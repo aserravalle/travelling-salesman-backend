@@ -11,17 +11,17 @@ app = FastAPI(
     description="API for generating job rosters using a dummy Traveling Salesman algorithm",
     version="1.0.1",
 )
-app.include_router(scheduler.router)
 
-allow_origins = os.getenv("ALLOW_ORIGINS", "http://localhost:8080").split(",")
+# allow_origins = os.getenv("ALLOW_ORIGINS", "http://localhost:8080").split(",")
+allow_origins = ["*"]  # Allow all
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
 )
+
+app.include_router(scheduler.router)
 
 @app.get("/")
 def home():

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import datetime
 from typing import Optional
 from pydantic import Field
@@ -12,8 +12,9 @@ class Job(BaseModel):
 
     Attributes:
         job_id: Unique identifier for the job
+        client_name: Optional name of the client
         date: Date the job needs to be completed
-        location: GPS location of the job
+        location: Location of the job (coordinates and/or address)
         duration_mins: Estimated duration of service in minutes
         entry_time: Earliest time the job can be started
         exit_time: Latest time the job must be completed
@@ -22,6 +23,7 @@ class Job(BaseModel):
     """
 
     job_id: str
+    client_name: Optional[str] = None
     date: datetime
     location: Location
     duration_mins: int = Field(gt=0)
@@ -30,6 +32,13 @@ class Job(BaseModel):
     salesman_id: Optional[str] = None
     start_time: Optional[datetime] = None
     _travel_time_mins: Optional[int] = 0
+
+    @field_validator('exit_time')
+    @classmethod
+    def validate_exit_time(cls, v, values):
+        if 'entry_time' in values.data and v < values.data['entry_time']:
+            raise ValueError('exit_time must be after entry_time')
+        return v
 
     def assign_salesman_and_start_time(
         self, salesman_id: str, job_start_time: datetime

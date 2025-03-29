@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+from typing import Optional
 from pydantic import Field
 
 from app.models.location import Location
@@ -12,7 +13,8 @@ class Salesman(BaseModel):
 
     Attributes:
         salesman_id: Unique identifier for the salesman
-        home_location: Starting location of the salesman
+        salesman_name: Optional name of the salesman
+        location: Home location of the salesman (coordinates and/or address)
         start_time: Earliest available start time
         end_time: Latest available end time
         current_location: Current location during job assignment
@@ -22,11 +24,12 @@ class Salesman(BaseModel):
     """
 
     salesman_id: str
-    home_location: Location
+    salesman_name: Optional[str] = None
+    location: Location
     start_time: datetime
     end_time: datetime
-    current_location: Location = None
-    current_time: datetime = None
+    current_location: Optional[Location] = None
+    current_time: Optional[datetime] = None
     time_worked_mins: int = Field(default=0, ge=0)
     max_workday_mins: int = Field(default=8 * 60, ge=0)  # 8 hours
 

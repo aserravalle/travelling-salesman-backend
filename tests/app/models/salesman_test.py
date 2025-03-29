@@ -6,7 +6,7 @@ from app.models.salesman import Salesman
 def test_can_complete_job_in_time():
     sman = Salesman(
         salesman_id="1",
-        home_location=Location(40.730610, -73.935242),
+        location=Location(latitude=40.730610, longitude=-73.935242),
         start_time=datetime(2025, 2, 5, 9, 0, 0),
         end_time=datetime(2025, 2, 5, 17, 0, 0),
     )
@@ -56,49 +56,49 @@ def test_salesman_sorting():
     salesmen = [
         Salesman(
             salesman_id="101",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 10, 0, 0),  # second start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             current_time=datetime(2025, 2, 5, 9, 0, 0),  # first current time
         ),
         Salesman(
             salesman_id="102",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 9, 0, 0),  # first start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             current_time=datetime(2025, 2, 5, 10, 0, 0),  # second current time
         ),
         Salesman(
             salesman_id="103",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 10, 0, 0),  # second start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             current_time=datetime(2025, 2, 5, 10, 0, 0),  # second current time
         ),
         Salesman(
             salesman_id="104",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 10, 0, 0),  # second start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             # null current time
         ),
         Salesman(
             salesman_id="105",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 10, 0, 0),  # second start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             current_time=datetime(2025, 2, 5, 11, 0, 0),  # third current time
         ),
         Salesman(
             salesman_id="106",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 11, 0, 0),  # third start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             # null current time
         ),
         Salesman(
             salesman_id="107",
-            home_location=Location(0, 0),
+            location=Location(latitude=0, longitude=0),
             start_time=datetime(2025, 2, 5, 9, 0, 0),  # first start time
             end_time=datetime(2025, 2, 5, 17, 0, 0),
             # null current time
