@@ -5,34 +5,9 @@ from math import radians, sin, cos, sqrt, atan2
 import googlemaps
 from dotenv import load_dotenv
 import os
+import requests
 
 load_dotenv()
-
-def get_coordinates_from_address(address: str) -> tuple[float, float]:
-    """
-    Placeholder function to get coordinates from address.
-    To be implemented with geocoding service.
-    """
-    # TODO Should probably get thie key in main.py
-    api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
-    if not api_key:
-        raise ValueError("Google Maps API key not found in environment variables.")
-
-    gmaps = googlemaps.Client(key=api_key)
-    
-    try:
-        geocode_result = gmaps.geocode(address)
-        if geocode_result:
-            location = geocode_result[0]['geometry']['location']
-            return location['lat'], location['lng']
-        else:
-            return None, None
-    except Exception as e:
-        print(f"Error getting coordinates for {address}: {e}")
-        return None, None
-
-    # return (39.473800, -0.375600) # Valencia, Spain
-
 
 class Location(BaseModel):
     """
@@ -59,7 +34,7 @@ class Location(BaseModel):
 
             # If no coordinates but address is present, generate coordinates
             if self.address is not None:
-                self.latitude, self.longitude = get_coordinates_from_address(self.address)
+                self.latitude, self.longitude = self.get_coordinates_from_address(self.address)
             else:
                 raise ValueError("Either coordinates or address must be provided")
         
@@ -85,3 +60,30 @@ class Location(BaseModel):
             return timedelta(minutes=20) # TODO: change once we implement GPS
 
         return timedelta(minutes=20)
+
+
+    @staticmethod
+    def get_coordinates_from_address(address: str) -> tuple[float, float]:
+        """
+        Placeholder function to get coordinates from address.
+        To be implemented with geocoding service.
+        """
+        # TODO Should probably get thie key in main.py
+        api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
+        if not api_key:
+            raise ValueError("Google Maps API key not found in environment variables.")
+
+        gmaps = googlemaps.Client(key=api_key)
+        
+        try:
+            geocode_result = gmaps.geocode(address)
+            if geocode_result:
+                location = geocode_result[0]['geometry']['location']
+                return location['lat'], location['lng']
+            else:
+                return None, None
+        except Exception as e:
+            print(f"Error getting coordinates for {address}: {e}")
+            return None, None
+
+        # return (39.473800, -0.375600) # Valencia, Spain
