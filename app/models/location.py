@@ -34,7 +34,10 @@ class Location(BaseModel):
 
             # If no coordinates but address is present, generate coordinates
             if self.address is not None:
-                self.latitude, self.longitude = self.get_coordinates_from_address(self.address)
+                response = self.get_coordinates_from_address(self.address)
+                self.latitude = response.get('latitude')
+                self.longitude = response.get('longitude')
+                self.address = response.get('address')
             else:
                 raise ValueError("Either coordinates or address must be provided")
         
@@ -63,27 +66,35 @@ class Location(BaseModel):
 
 
     @staticmethod
-    def get_coordinates_from_address(address: str) -> tuple[float, float]:
+    def get_coordinates_from_address(address: str) -> dict:
         """
-        Placeholder function to get coordinates from address.
-        To be implemented with geocoding service.
+        Get latitude, longitude (rounded to 4 decimals), and formatted address 
+        from a partial address using OpenStreetMap's Nominatim API.
+        Returns a dictionary with keys: 'latitude', 'longitude', 'address'.
         """
-        # TODO Should probably get thie key in main.py
-        api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
-        if not api_key:
-            raise ValueError("Google Maps API key not found in environment variables.")
-
-        gmaps = googlemaps.Client(key=api_key)
-        
         try:
-            geocode_result = gmaps.geocode(address)
-            if geocode_result:
-                location = geocode_result[0]['geometry']['location']
-                return location['lat'], location['lng']
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                'q': address,
+                'format': 'json',
+                'addressdetails': 1,  # ask for extra details
+                'limit': 1            # only top result
+            }
+            headers = {
+                'User-Agent': 'TravellingSalesman/1.0 (magicchili1998@gmail.com)'  # Required
+            }
+            response = requests.get(url, params=params, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+            if data:
+                result = data[0]
+                return {
+                    'latitude': round(float(result['lat']), 4),
+                    'longitude': round(float(result['lon']), 4),
+                    'address': result.get('display_name', '')
+                }
             else:
-                return None, None
+                return {}
         except Exception as e:
             print(f"Error getting coordinates for {address}: {e}")
-            return None, None
-
-        # return (39.473800, -0.375600) # Valencia, Spain
+            raise e
