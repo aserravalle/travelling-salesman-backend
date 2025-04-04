@@ -1,13 +1,7 @@
 from datetime import timedelta
 from typing import Optional
 from pydantic import BaseModel, Field, model_validator
-from math import radians, sin, cos, sqrt, atan2
-import googlemaps
-from dotenv import load_dotenv
-import os
 import requests
-
-load_dotenv()
 
 class Location(BaseModel):
     """
