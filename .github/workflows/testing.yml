@@ -22,10 +22,6 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
 
-    - name: Format Code with Black (modifies files)
-      run: |
-        black .
-
     - name: Lint with Flake8 (warn only)
       run: |
         flake8 .

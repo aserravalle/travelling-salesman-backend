@@ -18,11 +18,17 @@ def test_location_creation_with_coordinates():
 
 
 def test_location_creation_with_address():
-    # Test with only address (will generate coordinates)
-    loc = Location(address="123 Main St")
-    assert loc.latitude == 39.4738  # Placeholder value
-    assert loc.longitude == -0.3756  # Placeholder value
-    assert loc.address == "123 Main St"
+    loc = Location(address="Piazza del Colosseo, 1, 00184 Roma RM, Italy")
+    assert loc.latitude == 41.8916  # Placeholder value
+    assert loc.longitude == 12.4928  # Placeholder value
+    assert loc.address == "1, Piazza del Colosseo, Monti, Municipio Roma I, Roma, Roma Capitale, Lazio, 00184, Italia"
+
+
+def test_get_coordinates_from_address():
+    coords = Location.get_coordinates_from_address(address="Piazza del Colosseo, 1, 00184 Roma RM, Italy")
+    assert coords["latitude"] == 41.8916
+    assert coords["longitude"] == 12.4928
+    assert coords["address"] == "1, Piazza del Colosseo, Monti, Municipio Roma I, Roma, Roma Capitale, Lazio, 00184, Italia"
 
 
 def test_location_validation():
