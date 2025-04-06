@@ -38,8 +38,8 @@ class LocationHelpers:
         result = LocationHelpers.get_coordinates_from_cache(address)
         if not LocationHelpers.is_valid_location(result):
             result = LocationHelpers.get_coordinates_via_api(address)
-            assert LocationHelpers.is_valid_location(result)
-            LocationHelpers.add_result_to_cache(address, result)
+            if LocationHelpers.is_valid_location(result):
+                LocationHelpers.add_result_to_cache(address, result)
         return result
     
     @staticmethod
@@ -75,7 +75,7 @@ class LocationHelpers:
             result = LocationHelpers.locationCache[rawAddress]
             return result
         except KeyError:
-            print(f"Coordinates for {rawAddress} not found in cache.")
+            print(f"Coordinates not found in cache: {rawAddress}")
             return None
         
 
@@ -86,6 +86,7 @@ class LocationHelpers:
         from a partial address using OpenStreetMap's Nominatim API.
         Returns a dictionary with keys: 'latitude', 'longitude', 'address'.
         """
+        address = LocationHelpers.normalise_address(address)
         url = "https://nominatim.openstreetmap.org/search"
         params = {
             'q': address,
@@ -114,6 +115,14 @@ class LocationHelpers:
         except Exception as e:
             print(f"Error getting coordinates from API for {address}: {e}")
             raise e
+        
+
+    @staticmethod
+    def normalise_address(rawAddress: str) -> str:
+        """
+        Normalise the address by replacing spaces with '+'.
+        """
+        return rawAddress.replace('ª', '').replace('º', '')
 
 
 # Load coordinates when the class is imported

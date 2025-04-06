@@ -54,7 +54,7 @@ class TestLocationHelpers:
         result = LocationHelpers.get_coordinates_from_cache("Piazza del Colosseo, 1")
         assert result is None, "Should return None for non-existent address in cache"
 
-    def test_get_coordinates_from_address(self):
+    def test_get_coordinates_from_address_italian(self):
         self.set_test_cache({})
         assert LocationHelpers.locationCache == {}, "Pre assertion - empty cache"
 
@@ -65,13 +65,39 @@ class TestLocationHelpers:
                 "address": "1, Piazza del Colosseo, Monti, Municipio Roma I, Roma, Roma Capitale, Lazio, 00184, Italia"
             }
         }
+        rawAddress = next(iter(expected_result.keys()))
 
-        result = LocationHelpers.get_coordinates_from_address("Piazza del Colosseo, 1")
-        assert result == expected_result["Piazza del Colosseo, 1"]
+        result = LocationHelpers.get_coordinates_from_address(rawAddress)
+        assert result == expected_result[rawAddress]
         assert LocationHelpers.locationCache == expected_result, "New result should be added to cache"
 
-        cacheResult = LocationHelpers.get_coordinates_from_cache("Piazza del Colosseo, 1")
-        assert cacheResult == expected_result["Piazza del Colosseo, 1"]
+        cacheResult = LocationHelpers.get_coordinates_from_cache(rawAddress)
+        assert cacheResult == expected_result[rawAddress]
+
+        with open(self.test_file_path, 'r') as file:
+            fileResult = json.load(file)
+        assert fileResult == expected_result, "Cache file should be updated"
+
+
+    def test_get_coordinates_from_address_spanish(self):
+        self.set_test_cache({})
+        assert LocationHelpers.locationCache == {}, "Pre assertion - empty cache"
+
+        expected_result = {
+            "C/ MIGUEL SERVET, 18-8ª, VALENCIA, VALENCIA, ESPAÑA": {
+                "latitude": 39.4879,
+                "longitude": -0.394,
+                "address": "Carrer de Miguel Servet, Benicalap, València, Comarca de València, València / Valencia, Comunitat Valenciana, 46015, España"
+            }
+        }
+        rawAddress = next(iter(expected_result.keys()))
+
+        result = LocationHelpers.get_coordinates_from_address(rawAddress)
+        assert result == expected_result[rawAddress]
+        assert LocationHelpers.locationCache == expected_result, "New result should be added to cache"
+
+        cacheResult = LocationHelpers.get_coordinates_from_cache(rawAddress)
+        assert cacheResult == expected_result[rawAddress]
 
         with open(self.test_file_path, 'r') as file:
             fileResult = json.load(file)
