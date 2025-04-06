@@ -52,7 +52,7 @@ class Salesman(BaseModel):
         )
         return job_finished_in_time and not salesman_exceeds_max_hours
 
-    def assign_to_salesman(self, job: Job) -> None:
+    def assign_job(self, job: Job) -> None:
         """
         Update salesman's state after job assignment.
 

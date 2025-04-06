@@ -1,3 +1,4 @@
+import json
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -35,7 +36,7 @@ def test_assign_jobs_api():
             {
                 "job_id": "4",
                 "date": "2025-02-05 00:00:00",
-                "location": { "address": "321 Elm St" },
+                "location": { "address": "2 Bass St" },
                 "duration_mins": 90,
                 "entry_time": "2025-02-05 12:30:00",
                 "exit_time": "2025-02-05 15:00:00",
@@ -216,3 +217,150 @@ def test_unassignable_jobs():
     assert (
         response_json["message"] == "Roster completed with unassigned jobs"
     ), "Message should indicate unassigned jobs"
+
+
+def test_assign_jobs_florence():
+    with open("tests/app/routes/roster_request_florence.json", "r") as file:
+        request = json.load(file)
+    response = client.post("/assign_jobs", json=request)
+    assert response.status_code == 200, "Response should have status 200"
+
+    response_json = response.json()
+    expected = {
+        "jobs": {
+            "101": [
+                {
+                    "job_id": "1",
+                    "client_name": "Airbnb 1",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7677,
+                        "longitude": 11.2593,
+                        "address": "1 R, Via dei Neri, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+                    },
+                    "duration_mins": 120,
+                    "entry_time": "2025-03-28T08:00:00",
+                    "exit_time": "2025-03-28T23:00:00",
+                    "salesman_id": "101",
+                    "salesman_name": "Francesco",
+                    "start_time": "2025-03-28T09:00:00"
+                },
+                {
+                    "job_id": "3",
+                    "client_name": "Airbnb 3",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7704,
+                        "longitude": 11.2512,
+                        "address": "Tornabuoni Beacci, 3, Via dei Tornabuoni, Oltrarno, Quartiere 1, Firenze, Toscana, 50123, Italia"
+                    },
+                    "duration_mins": 120,
+                    "entry_time": "2025-03-28T11:00:00",
+                    "exit_time": "2025-03-28T23:00:00",
+                    "salesman_id": "101",
+                    "salesman_name": "Francesco",
+                    "start_time": "2025-03-28T11:20:00"
+                }
+            ],
+            "102": [
+                {
+                    "job_id": "5",
+                    "client_name": "Airbnb 5",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7687,
+                        "longitude": 11.2687,
+                        "address": "5, Via Ghibellina, San Niccolò, Quartiere 1, Firenze, Toscana, 50121, Italia"
+                    },
+                    "duration_mins": 120,
+                    "entry_time": "2025-03-28T08:40:00",
+                    "exit_time": "2025-03-28T14:00:00",
+                    "salesman_id": "102",
+                    "salesman_name": "Alessio",
+                    "start_time": "2025-03-28T09:00:00"
+                },
+                {
+                    "job_id": "4",
+                    "client_name": "Airbnb 4",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7677,
+                        "longitude": 11.2596,
+                        "address": "4 R, Via dei Benci, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+                    },
+                    "duration_mins": 120,
+                    "entry_time": "2025-03-28T11:00:00",
+                    "exit_time": "2025-03-28T23:00:00",
+                    "salesman_id": "102",
+                    "salesman_name": "Alessio",
+                    "start_time": "2025-03-28T11:20:00"
+                }
+            ],
+            "103": [
+                {
+                    "job_id": "7",
+                    "client_name": "Airbnb 7",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7689,
+                        "longitude": 11.2606,
+                        "address": "Piazza Santa Croce, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+                    },
+                    "duration_mins": 120,
+                    "entry_time": "2025-03-28T10:00:00",
+                    "exit_time": "2025-03-28T14:30:00",
+                    "salesman_id": "103",
+                    "salesman_name": "Andrea",
+                    "start_time": "2025-03-28T10:00:00"
+                },
+                {
+                    "job_id": "2",
+                    "client_name": "Airbnb 2",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7714,
+                        "longitude": 11.2507,
+                        "address": "2, Via della Vigna Nuova, San Frediano, Quartiere 1, Firenze, Toscana, 50123, Italia"
+                    },
+                    "duration_mins": 90,
+                    "entry_time": "2025-03-28T12:00:00",
+                    "exit_time": "2025-03-28T23:00:00",
+                    "salesman_id": "103",
+                    "salesman_name": "Andrea",
+                    "start_time": "2025-03-28T12:20:00"
+                }
+            ],
+            "104": [
+                {
+                    "job_id": "6",
+                    "client_name": "Airbnb 6",
+                    "date": "2025-03-28T09:00:00",
+                    "location": {
+                        "latitude": 43.7738,
+                        "longitude": 11.2547,
+                        "address": "6, Borgo San Lorenzo, Quartiere 1, Firenze, Toscana, 50123, Italia"
+                    },
+                    "duration_mins": 120,
+                    "entry_time": "2025-03-28T10:00:00",
+                    "exit_time": "2025-03-28T23:00:00",
+                    "salesman_id": "104",
+                    "salesman_name": "Matteo",
+                    "start_time": "2025-03-28T10:00:00"
+                }
+            ]
+        },
+        "unassigned_jobs": [],
+        "message": "Roster completed with all jobs assigned"
+    }
+
+    # Assert that both have the same "unassigned_jobs" and "message"
+    assert response_json["unassigned_jobs"] == expected["unassigned_jobs"], "Unassigned jobs should match"
+    assert response_json["message"] == expected["message"], "Message should match"
+
+    # Iterate through the "jobs" and ensure each is the same
+    for salesman_id, jobs in expected["jobs"].items():
+        assert salesman_id in response_json["jobs"], f"Salesman {salesman_id} should be in the response"
+        for i in range(len(jobs)):
+            expected_job = jobs[i]
+            actual_job = response_json["jobs"][salesman_id][i]
+            assert actual_job == expected_job, f"Expected the same assignment for {salesman_id} job index {i}"

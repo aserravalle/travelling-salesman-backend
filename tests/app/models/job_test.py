@@ -47,7 +47,7 @@ def test_job_assign_salesman():
     )
     
     start_time = datetime(2025, 2, 6, 11, 0, 0)
-    job.assign_salesman_and_start_time("S1", start_time)
+    job.assign_salesman("S1", start_time)
     
     assert job.salesman_id == "S1"
     assert job.start_time == start_time

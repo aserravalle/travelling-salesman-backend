@@ -1,5 +1,5 @@
 from datetime import date, datetime, timedelta
-from app.models.roster import RosterResponse
+from app.models.roster_response import RosterResponse
 from app.models.job import Job
 from app.models.salesman import Salesman
 from app.models.location import Location

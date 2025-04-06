@@ -11,7 +11,7 @@ class LocationHelpers:
         if file_path:
             LocationHelpers.cache_file_path = file_path
         try:
-            with open(file_path, 'r') as file:
+            with open(LocationHelpers.cache_file_path, 'r') as file:
                 result = json.load(file)
                 for key, value in result.items():
                     if LocationHelpers.is_valid_location(value):
@@ -19,7 +19,7 @@ class LocationHelpers:
                     else:
                         print(f"Invalid location data for {key}: {value}")
         except FileNotFoundError:
-            print(f"Cache file not found: {file_path}")
+            print(f"Cache file not found: {LocationHelpers.cache_file_path}")
             LocationHelpers.locationCache = {}
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from cache file: {e}")

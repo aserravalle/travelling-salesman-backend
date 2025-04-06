@@ -4,10 +4,15 @@
       "longitude": 12.4928,
       "address": "1, Piazza del Colosseo, Monti, Municipio Roma I, Roma, Roma Capitale, Lazio, 00184, Italia"
     },
-    "321 Elm St": {
-        "latitude": 41.3747,
-        "longitude": -72.4547,
-        "address": "321, West Elm Street, Deep River, Lower Connecticut River Valley Planning Region, Connecticut, 06417, United States"
+    "2 Bass St": {
+      "latitude": -33.808,
+      "longitude": 151.0591,
+      "address": "2, Bass Street, Ermington, Sydney, City of Parramatta Council, New South Wales, 2115, Australia"
+    },
+    "102 Home": {
+      "latitude": -18.9294,
+      "longitude": 47.5098,
+      "address": "Home, Làlana Pasitora Rahajason, Ivolaniray, Mandrangobato, Antananarivo, Analamanga, Province d’Antananarivo, 102, Madagasikara / Madagascar"
     },
     "789 Pine Rd": {
       "latitude": 52.9665,
