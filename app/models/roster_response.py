@@ -49,6 +49,6 @@ class RosterResponse(BaseModel):
             salesman: Salesman to assign the job to
             job_start_time: When the job should start
         """
-        job.assign_salesman_and_start_time(salesman.salesman_id, job_start_time)
-        salesman.assign_to_salesman(job)
+        job.assign_salesman(salesman.salesman_id, job_start_time, salesman.salesman_name)
+        salesman.assign_job(job)
         self.jobs[salesman.salesman_id].append(job)

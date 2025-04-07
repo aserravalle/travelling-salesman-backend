@@ -1,0 +1,77 @@
+{
+    "Piazza del Colosseo, 1, 00184 Roma RM, Italy": {
+      "latitude": 41.8916,
+      "longitude": 12.4928,
+      "address": "1, Piazza del Colosseo, Monti, Municipio Roma I, Roma, Roma Capitale, Lazio, 00184, Italia"
+    },
+    "2 Bass St": {
+      "latitude": -33.808,
+      "longitude": 151.0591,
+      "address": "2, Bass Street, Ermington, Sydney, City of Parramatta Council, New South Wales, 2115, Australia"
+    },
+    "102 Home": {
+      "latitude": -18.9294,
+      "longitude": 47.5098,
+      "address": "Home, Làlana Pasitora Rahajason, Ivolaniray, Mandrangobato, Antananarivo, Analamanga, Province d’Antananarivo, 102, Madagasikara / Madagascar"
+    },
+    "789 Pine Rd": {
+      "latitude": 52.9665,
+      "longitude": -122.4663,
+      "address": "789, Pine Road, Red Bluff, Area A (Red Bluff/Quesnel South), Cariboo Regional District, British Columbia, V2J 4A1, Canada"
+    },
+    "Via dei Neri 1, Florence": {
+      "latitude": 43.7677,
+      "longitude": 11.2593,
+      "address": "1 R, Via dei Neri, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+    },
+    "Via della Vigna Nuova 2, Florence": {
+      "latitude": 43.7714,
+      "longitude": 11.2507,
+      "address": "2, Via della Vigna Nuova, San Frediano, Quartiere 1, Firenze, Toscana, 50123, Italia"
+    },
+    "Via de' Tornabuoni 3, Florence": {
+      "latitude": 43.7704,
+      "longitude": 11.2512,
+      "address": "Tornabuoni Beacci, 3, Via dei Tornabuoni, Oltrarno, Quartiere 1, Firenze, Toscana, 50123, Italia"
+    },
+    "Via de' Benci 4, Florence": {
+      "latitude": 43.7677,
+      "longitude": 11.2596,
+      "address": "4 R, Via dei Benci, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+    },
+    "Via Ghibellina 5, Florence": {
+      "latitude": 43.7687,
+      "longitude": 11.2687,
+      "address": "5, Via Ghibellina, San Niccolò, Quartiere 1, Firenze, Toscana, 50121, Italia"
+    },
+    "Borgo San Lorenzo 6, Florence": {
+      "latitude": 43.7738,
+      "longitude": 11.2547,
+      "address": "6, Borgo San Lorenzo, Quartiere 1, Firenze, Toscana, 50123, Italia"
+    },
+    "Piazza Santa Croce 7, Florence": {
+      "latitude": 43.7689,
+      "longitude": 11.2606,
+      "address": "Piazza Santa Croce, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+    },
+    "Viale dei Mille 12, Florence": {
+      "latitude": 43.7807,
+      "longitude": 11.2795,
+      "address": "12, Viale dei Mille, Campo di Marte, Quartiere 2, Firenze, Toscana, 50137, Italia"
+    },
+    "Via dei Calzaiuoli 45, Florence": {
+      "latitude": 43.7705,
+      "longitude": 11.2553,
+      "address": "Via dei Calzaiuoli, Oltrarno, Quartiere 1, Firenze, Toscana, 50122, Italia"
+    },
+    "Via Roma 1, Florence": {
+      "latitude": 43.7544,
+      "longitude": 11.3063,
+      "address": "1, Via Roma, Sorgane, Quartiere 3, Bagno a Ripoli, Firenze, Toscana, 50012, Italia"
+    },
+    "Piazza della Repubblica 3, Florence": {
+      "latitude": 43.7711,
+      "longitude": 11.2539,
+      "address": "3, Piazza della Repubblica, Oltrarno, Quartiere 1, Firenze, Toscana, 50123, Italia"
+    }
+  }

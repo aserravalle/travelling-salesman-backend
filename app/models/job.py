@@ -30,6 +30,7 @@ class Job(BaseModel):
     entry_time: datetime
     exit_time: datetime
     salesman_id: Optional[str] = None
+    salesman_name: Optional[str] = None
     start_time: Optional[datetime] = None
     _travel_time_mins: Optional[int] = 0
 
@@ -40,17 +41,11 @@ class Job(BaseModel):
             raise ValueError('exit_time must be after entry_time')
         return v
 
-    def assign_salesman_and_start_time(
-        self, salesman_id: str, job_start_time: datetime
+    def assign_salesman(
+        self, salesman_id: str, job_start_time: datetime, salesman_name: str = ""
     ) -> None:
-        """
-        Assign a salesman and start time to this job.
-
-        Args:
-            salesman_id: ID of the salesman to assign
-            job_start_time: Scheduled start time for the job
-        """
         self.salesman_id = salesman_id
+        self.salesman_name = salesman_name
         self.start_time = job_start_time
 
     def __lt__(self, other: "Job") -> bool:
@@ -58,7 +53,8 @@ class Job(BaseModel):
         Compare jobs for sorting. Jobs are sorted by:
         1. Date
         2. Entry time
-        3. Time window duration
+        3. Job duration
+        4. Time window duration
         """
         return (
             self.date,

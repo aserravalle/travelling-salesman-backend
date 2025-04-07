@@ -1,0 +1,120 @@
+{
+    "jobs": [
+      {
+        "job_id": "1",
+        "client_name": "Airbnb 1",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Via dei Neri 1, Florence"
+        },
+        "duration_mins": 120,
+        "entry_time": "2025-03-28 08:00:00",
+        "exit_time": "2025-03-28 23:00:00"
+      },
+      {
+        "job_id": "2",
+        "client_name": "Airbnb 2",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Via della Vigna Nuova 2, Florence"
+        },
+        "duration_mins": 90,
+        "entry_time": "2025-03-28 12:00:00",
+        "exit_time": "2025-03-28 23:00:00"
+      },
+      {
+        "job_id": "3",
+        "client_name": "Airbnb 3",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Via de' Tornabuoni 3, Florence"
+        },
+        "duration_mins": 120,
+        "entry_time": "2025-03-28 11:00:00",
+        "exit_time": "2025-03-28 23:00:00"
+      },
+      {
+        "job_id": "4",
+        "client_name": "Airbnb 4",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Via de' Benci 4, Florence"
+        },
+        "duration_mins": 120,
+        "entry_time": "2025-03-28 11:00:00",
+        "exit_time": "2025-03-28 23:00:00"
+      },
+      {
+        "job_id": "5",
+        "client_name": "Airbnb 5",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Via Ghibellina 5, Florence"
+        },
+        "duration_mins": 120,
+        "entry_time": "2025-03-28 08:40:00",
+        "exit_time": "2025-03-28 14:00:00"
+      },
+      {
+        "job_id": "6",
+        "client_name": "Airbnb 6",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Borgo San Lorenzo 6, Florence"
+        },
+        "duration_mins": 120,
+        "entry_time": "2025-03-28 10:00:00",
+        "exit_time": "2025-03-28 23:00:00"
+      },
+      {
+        "job_id": "7",
+        "client_name": "Airbnb 7",
+        "date": "2025-03-28 09:00:00",
+        "location": {
+          "address": "Piazza Santa Croce 7, Florence"
+        },
+        "duration_mins": 120,
+        "entry_time": "2025-03-28 10:00:00",
+        "exit_time": "2025-03-28 14:30:00"
+      }
+    ],
+    "salesmen": [
+      {
+        "salesman_id": "101",
+        "salesman_name": "Francesco",
+        "location": {
+          "address": "Viale dei Mille 12, Florence"
+        },
+        "start_time": "2025-03-28 09:00:00",
+        "end_time": "2025-03-28 18:00:00"
+      },
+      {
+        "salesman_id": "102",
+        "salesman_name": "Alessio",
+        "location": {
+          "address": "Via dei Calzaiuoli 45, Florence"
+        },
+        "start_time": "2025-03-28 09:00:00",
+        "end_time": "2025-03-28 18:00:00"
+      },
+      {
+        "salesman_id": "103",
+        "salesman_name": "Andrea",
+        "location": {
+          "address": "Via Roma 1, Florence"
+        },
+        "start_time": "2025-03-28 09:00:00",
+        "end_time": "2025-03-28 18:00:00"
+      },
+      {
+        "salesman_id": "104",
+        "salesman_name": "Matteo",
+        "location": {
+          "address": "Piazza della Repubblica 3, Florence"
+        },
+        "start_time": "2025-03-28 09:00:00",
+        "end_time": "2025-03-28 18:00:00"
+      }
+    ]
+  }
+  
