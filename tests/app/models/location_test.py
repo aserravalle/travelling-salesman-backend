@@ -69,7 +69,7 @@ def test_travel_time_to_same():
     loc_a = Location(latitude=34.0522, longitude=-118.2437)
     loc_b = Location(latitude=34.0522, longitude=-118.2437)
     travel_time = loc_a.travel_time_to(loc_b)
-    assert travel_time == timedelta(minutes=20), "Locations are the same"
+    assert travel_time == timedelta(minutes=5), "Locations are the same"
 
 
 def test_travel_time_to_invalid():

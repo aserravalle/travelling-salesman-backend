@@ -12,9 +12,12 @@ from sendgrid.helpers.mail import Mail
 router = APIRouter()
 
 @router.post("/assign_jobs")
-def assign_jobs_endpoint_post(request: RosterRequest) -> RosterResponse:
-    roster = assign_jobs(request.jobs, request.salesmen)
-    return roster.model_dump()
+def assign_jobs_endpoint_post(request: RosterRequest) -> dict:
+    try:
+        roster = assign_jobs(request.jobs, request.salesmen)
+        return roster.model_dump()
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/assign_jobs")

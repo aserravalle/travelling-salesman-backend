@@ -55,6 +55,6 @@ class Location(BaseModel):
             Estimated travel time as timedelta
         """
         if self.is_same_location_as(other):
-            return timedelta(minutes=20) # TODO: change once we implement GPS
+            return timedelta(minutes=5)
 
         return timedelta(minutes=20)
