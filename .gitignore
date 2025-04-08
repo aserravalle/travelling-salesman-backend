@@ -173,4 +173,3 @@ cython_debug/
 # Sensitive data
 tests/data/sensitive data/*
 .DS_Store
-app/services/locationCache.json

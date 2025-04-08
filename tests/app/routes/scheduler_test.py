@@ -364,3 +364,53 @@ def test_assign_jobs_florence():
             expected_job = jobs[i]
             actual_job = response_json["jobs"][salesman_id][i]
             assert actual_job == expected_job, f"Expected the same assignment for {salesman_id} job index {i}"
+
+# def test_invalid_address_does_not_break_api():
+#     # Test data with no jobs
+#     request = {
+#         "jobs": [
+#             {
+#                 "job_id": "1",
+#                 "date": "2025-02-05 00:00:00",
+#                 "location": { "latitude": 40.7128, "longitude": -74.0060 },
+#                 "duration_mins": 60,
+#                 "entry_time": "2025-02-05 09:00:00",
+#                 "exit_time": "2025-02-05 12:00:00",
+#             },
+#             {
+#                 "job_id": "2",
+#                 "date": "2025-02-05 00:00:00",
+#                 "location": { "address": "invalid_address" },
+#                 "duration_mins": 45,
+#                 "entry_time": "2025-02-05 09:30:00",
+#                 "exit_time": "2025-02-05 14:00:00",
+#             }
+#         ],
+#         "salesmen": [
+#             {
+#                 "salesman_id": "101",
+#                 "location": { "latitude": 40.730610, "longitude": -73.935242 },
+#                 "start_time": "2025-02-05 09:00:00",
+#                 "end_time": "2025-02-05 17:00:00",
+#             }
+#         ]
+#     }
+
+#     # Send request to API
+#     response = client.post("/assign_jobs", json=request)
+
+#     # ✅ Validate response status
+#     assert response.status_code == 200, "Response should have status 200"
+#     response_json = response.json()
+
+#     # ✅ Validate no jobs are assigned
+#     assert response_json["jobs"] == {
+#         "101": [],
+#         "102": [],
+#     }, "Salesmen should not have any jobs assigned"
+#     assert len(response_json["unassigned_jobs"]) == 0, "No jobs should be unassigned"
+
+#     # ✅ Validate message
+#     assert (
+#         response_json["message"] == "No jobs to assign"
+#     ), "Message should indicate no jobs to assign"

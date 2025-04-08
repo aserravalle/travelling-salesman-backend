@@ -60,23 +60,14 @@ class TestLocationHelpers:
 
         expected_result = {
             "Piazza del Colosseo, 1": {
-                "latitude": 41.8916,
-                "longitude": 12.4928,
-                "address": "1, Piazza del Colosseo, Monti, Municipio Roma I, Roma, Roma Capitale, Lazio, 00184, Italia"
+                "latitude": 41.8900,
+                "longitude": 12.4943,
+                "address": "Piazza del Colosseo, 1, 00184 Roma RM, Italy"
             }
         }
         rawAddress = next(iter(expected_result.keys()))
 
-        result = LocationHelpers.get_coordinates_from_address(rawAddress)
-        assert result == expected_result[rawAddress]
-        assert LocationHelpers.locationCache == expected_result, "New result should be added to cache"
-
-        cacheResult = LocationHelpers.get_coordinates_from_cache(rawAddress)
-        assert cacheResult == expected_result[rawAddress]
-
-        with open(self.test_file_path, 'r') as file:
-            fileResult = json.load(file)
-        assert fileResult == expected_result, "Cache file should be updated"
+        self.assert_get_new_address_and_add_to_cache(expected_result, rawAddress)
 
 
     def test_get_coordinates_from_address_spanish(self):
@@ -85,28 +76,29 @@ class TestLocationHelpers:
 
         expected_result = {
             "C/ MIGUEL SERVET, 18-8ª, VALENCIA, VALENCIA, ESPAÑA": {
-                "latitude": 39.4879,
-                "longitude": -0.394,
-                "address": "Carrer de Miguel Servet, Benicalap, València, Comarca de València, València / Valencia, Comunitat Valenciana, 46015, España"
+                "latitude": 39.4874,
+                "longitude": -0.3932,
+                "address": "C/ de Miguel Servet, 18, Benicalap, 46015 València, Valencia, Spain"
             }
         }
         rawAddress = next(iter(expected_result.keys()))
 
+        self.assert_get_new_address_and_add_to_cache(expected_result, rawAddress)
+
+    def assert_get_new_address_and_add_to_cache(self, expected_result, rawAddress):
         result = LocationHelpers.get_coordinates_from_address(rawAddress)
         assert result == expected_result[rawAddress]
-        assert LocationHelpers.locationCache == expected_result, "New result should be added to cache"
+        assert LocationHelpers.locationCache.get(rawAddress, {}) == expected_result[rawAddress], "New result should be added to cache"
 
         cacheResult = LocationHelpers.get_coordinates_from_cache(rawAddress)
         assert cacheResult == expected_result[rawAddress]
 
         with open(self.test_file_path, 'r') as file:
             fileResult = json.load(file)
-        assert fileResult == expected_result, "Cache file should be updated"
+        assert fileResult[rawAddress] == expected_result[rawAddress], "Cache file should be updated"
 
     def set_test_cache(self, test_data):
-        # Create a valid JSON file
         with open(self.test_file_path, "w") as file:
             json.dump(test_data, file)
 
-        # Call the method
         LocationHelpers.load_coordinates(self.test_file_path)

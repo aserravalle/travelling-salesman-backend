@@ -1,6 +1,10 @@
 import os
 import requests
 import json
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 class LocationHelpers:
     cache_file_path = os.path.join(os.path.dirname(__file__), 'locationCache.json')
@@ -40,6 +44,8 @@ class LocationHelpers:
             result = LocationHelpers.get_coordinates_via_api(address)
             if LocationHelpers.is_valid_location(result):
                 LocationHelpers.add_result_to_cache(address, result)
+            else:
+                raise ValueError(f"Invalid location data from API for {address}")
         return result
     
     @staticmethod
@@ -73,6 +79,7 @@ class LocationHelpers:
         """
         try:
             result = LocationHelpers.locationCache[rawAddress]
+            print(f"Coordinates found in cache    : {rawAddress}")
             return result
         except KeyError:
             print(f"Coordinates not found in cache: {rawAddress}")
@@ -83,31 +90,31 @@ class LocationHelpers:
     def get_coordinates_via_api(address: str) -> dict:
         """
         Get latitude, longitude (rounded to 4 decimals), and formatted address 
-        from a partial address using OpenStreetMap's Nominatim API.
+        from a partial address using Google Maps API.
         Returns a dictionary with keys: 'latitude', 'longitude', 'address'.
         """
         address = LocationHelpers.normalise_address(address)
-        url = "https://nominatim.openstreetmap.org/search"
+        api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+        if not api_key:
+            raise ValueError("GOOGLE_MAPS_API_KEY is not set in the environment variables.")
+        
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
         params = {
-            'q': address,
-            'format': 'json',
-            'addressdetails': 1,  # ask for extra details
-            'limit': 1            # only top result
-        }
-        headers = {
-            'User-Agent': 'TravellingSalesman/1.0 (magicchili1998@gmail.com)'  # Required
+            'address': address,
+            'key': api_key
         }
         try:
-            response = requests.get(url, params=params, headers=headers)
+            response = requests.get(url, params=params)
             response.raise_for_status()
             data = response.json()
 
-            if data:
-                result = data[0]
+            if data.get('results'):
+                result = data['results'][0]
+                location = result['geometry']['location']
                 return {
-                    'latitude': round(float(result['lat']), 4),
-                    'longitude': round(float(result['lon']), 4),
-                    'address': result.get('display_name', '')
+                    'latitude': round(location['lat'], 4),
+                    'longitude': round(location['lng'], 4),
+                    'address': result.get('formatted_address', '')
                 }
             else:
                 return {}
