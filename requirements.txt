@@ -5,3 +5,4 @@ requests==2.32.3
 uvicorn==0.34.0
 dotenv==0.9.9
 scikit-learn==1.6.1
+sendgrid==6.11.0
