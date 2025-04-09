@@ -48,6 +48,19 @@ class Job(BaseModel):
         self.salesman_name = salesman_name
         self.start_time = job_start_time
 
+    @property
+    def urgency(self) -> float:
+        """
+        Calculate the urgency of the job based on the time window and duration.
+
+        Returns:
+            float: Urgency score
+        """
+        time_diff = self.exit_time - self.entry_time
+        time_diff_mins = time_diff.total_seconds() / 60
+        urgency = (self.duration_mins ** 2) / time_diff_mins
+        return urgency
+
     def __lt__(self, other: "Job") -> bool:
         """
         Compare jobs for sorting. Jobs are sorted by:
@@ -59,11 +72,9 @@ class Job(BaseModel):
         return (
             self.date,
             self.entry_time,
-            self.duration_mins,
-            self.exit_time - self.entry_time,
+            self.urgency
         ) < (
             other.date,
             other.entry_time,
-            other.duration_mins,
-            other.exit_time - other.entry_time,
+            other.urgency
         )
