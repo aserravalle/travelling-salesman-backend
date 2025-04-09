@@ -2,6 +2,7 @@ import os
 import requests
 import json
 from dotenv import load_dotenv
+from math import radians, sin, cos, sqrt, atan2
 
 # Load environment variables
 load_dotenv()
@@ -130,6 +131,38 @@ class LocationHelpers:
         Normalise the address by replacing spaces with '+'.
         """
         return rawAddress.replace('ª', '').replace('º', '')
+    
+    @staticmethod
+    def get_travel_time_minutes(coord1: tuple[float, float], coord2: tuple[float, float], average_speed_kmh: int = 10) -> int:
+        """
+        Calculate travel time between two locations as the crow flies.
+        Args:
+            coord1: Tuple containing latitude and longitude of the first location.
+            coord2: Tuple containing latitude and longitude of the second location.
+            average_speed_kmh: Average speed in km/h (default is 10 km/h).
+        Returns:
+            Estimated travel time as timedelta.
+        """
+        distance_km = LocationHelpers.get_distance_between(coord1, coord2)
+        travel_time_hours = distance_km / average_speed_kmh
+
+        return travel_time_hours * 60
+
+    @staticmethod
+    def get_distance_between(coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
+        """
+        Calculate the distance between two geographical coordinates using the Haversine formula.
+        """
+        R = 6371.0 # Radius of the Earth in kilometers
+        lat1, lon1 = radians(coord1[0]), radians(coord1[1])
+        lat2, lon2 = radians(coord2[0]), radians(coord2[1])
+
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        distance_km = R * c
+        return distance_km
 
 
 # Load coordinates when the class is imported

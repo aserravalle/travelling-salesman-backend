@@ -3,6 +3,8 @@ from app.models.job import Job
 from app.models.salesman import Salesman
 from app.models.location import Location
 from app.services.job_assignment import assign_jobs
+from unittest.mock import patch
+from app.services.location_helpers import LocationHelpers
 
 
 def test_assign_jobs():
@@ -161,7 +163,8 @@ def test_unassignable_jobs():
     ]
 
     # Call assign_jobs function
-    roster = assign_jobs(jobs, salesmen)
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        roster = assign_jobs(jobs, salesmen)
 
     # ✅ Validate assigned jobs
     assert set(job.job_id for job in roster.jobs["1"]) == {
@@ -218,7 +221,8 @@ def test_assign_jobs_accounts_for_travel_time():
         ),
     ]
 
-    roster = assign_jobs(jobs, [salesman])
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        roster = assign_jobs(jobs, [salesman])
 
     start_times = [job.start_time for job in roster.jobs["101"]]
     assert len(start_times) == 3, "All jobs should be assigned"
@@ -269,7 +273,8 @@ def test_assign_jobs_accounts_for_travel_time_and_entry_time():
         ),
     ]
 
-    roster = assign_jobs(jobs, [salesman])
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        roster = assign_jobs(jobs, [salesman])
 
     start_times = [job.start_time for job in roster.jobs["101"]]
     assert len(start_times) == 3, "3 jobs should be assigned"

@@ -49,20 +49,25 @@ def test_travel_time_to():
     loc_a = Location(latitude=34.0522, longitude=-118.2437)
     loc_b = Location(latitude=34.0000, longitude=-118.2500)
     travel_time = loc_a.travel_time_to(loc_b)
-    assert travel_time == timedelta(minutes=20), "Locations are close to each other"
+    assert travel_time == timedelta(seconds=2100, microseconds=2249), "Locations are close to each other"
 
+def test_travel_time_to_1():
     loc_a = Location(latitude=34.0522, longitude=-118.2437)
     loc_b = Location(latitude=35.0522, longitude=-119.2437)
     travel_time = loc_a.travel_time_to(loc_b)
-    assert travel_time == timedelta(minutes=20), "Locations are progressively more distant 1"
+    assert travel_time == timedelta(seconds=51858, microseconds=558767), "Locations are progressively more distant 1"
 
+def test_travel_time_to_2():
+    loc_a = Location(latitude=34.0522, longitude=-118.2437)
     loc_b = Location(latitude=36.0522, longitude=-120.2437)
     travel_time = loc_a.travel_time_to(loc_b)
-    assert travel_time == timedelta(minutes=20), "Locations are progressively more distant 2"
+    assert travel_time == timedelta(days=1, seconds=17059, microseconds=613764), "Locations are progressively more distant 2"
 
+def test_travel_time_to_3():
+    loc_a = Location(latitude=34.0522, longitude=-118.2437)
     loc_b = Location(latitude=37.0522, longitude=-121.2437)
     travel_time = loc_a.travel_time_to(loc_b)
-    assert travel_time == timedelta(minutes=20), "Locations are progressively more distant 3"
+    assert travel_time == timedelta(days=1, seconds=68395, microseconds=155158), "Locations are progressively more distant 3"
 
 
 def test_travel_time_to_same():

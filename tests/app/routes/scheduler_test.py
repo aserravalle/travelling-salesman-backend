@@ -1,6 +1,8 @@
 import json
 from fastapi.testclient import TestClient
 from app.main import app
+from unittest.mock import patch
+from app.services.location_helpers import LocationHelpers
 
 client = TestClient(app)
 
@@ -59,7 +61,8 @@ def test_assign_jobs_api():
     }
 
     # Send request to API
-    response = client.post("/assign_jobs", json=request)
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        response = client.post("/assign_jobs", json=request)
 
     # ✅ Validate response status
     assert response.status_code == 200, "Response should have status 200"
@@ -132,7 +135,8 @@ def test_no_jobs_supplied():
     }
 
     # Send request to API
-    response = client.post("/assign_jobs", json=request)
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        response = client.post("/assign_jobs", json=request)
 
     # ✅ Validate response status
     assert response.status_code == 200, "Response should have status 200"
@@ -191,7 +195,8 @@ def test_unassignable_jobs():
     }
 
     # Send request to API
-    response = client.post("/assign_jobs", json=request)
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        response = client.post("/assign_jobs", json=request)
 
     # ✅ Validate response status
     assert response.status_code == 200, "Response should have status 200"
@@ -222,7 +227,8 @@ def test_unassignable_jobs():
 def test_assign_jobs_florence():
     with open("tests/app/routes/roster_request_florence.json", "r") as file:
         request = json.load(file)
-    response = client.post("/assign_jobs", json=request)
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+        response = client.post("/assign_jobs", json=request)
     assert response.status_code == 200, "Response should have status 200"
 
     response_json = response.json()
