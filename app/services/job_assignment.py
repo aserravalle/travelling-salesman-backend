@@ -6,17 +6,7 @@ import numpy as np
 from app.models.job import Job
 from app.models.roster_response import RosterResponse
 from app.models.salesman import Salesman
-
-
-def cluster_jobs(jobs: List[Job], n_clusters: int) -> None:
-    """
-    Clustering algorithm using KMeans to assign a cluster id to each job.
-    Clusters are determined based on job locations (latitude and longitude).
-    """
-    job_locations = np.array([[job.location.latitude, job.location.longitude] for job in jobs])
-    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(job_locations)
-    for job, cluster_id in zip(jobs, kmeans.labels_):
-        job.cluster = int(cluster_id)
+from app.services.clustering_service import cluster_jobs
 
 
 def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
@@ -38,15 +28,15 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
     5. After all salesmen are processed (or no more assignable jobs exist),
        any remaining jobs are left as unassigned in the final roster.
     """
-    cluster_jobs(jobs, n_clusters=4)
-
     roster = RosterResponse()
     roster.add_salesmen(salesmen)
 
     if not jobs:
         roster.message = "No jobs to assign"
         return roster
-
+    
+    n_clusters=min(len(jobs), 4)
+    cluster_jobs(jobs, n_clusters)
     unassigned_jobs = sorted(jobs, reverse=True)
     unrostered_salesmen = salesmen.copy()
 
@@ -57,26 +47,24 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
         exhausted_clusters = set()  # Clusters that this salesman cannot accept any more jobs from
         print("Assigning jobs to:", salesman.salesman_id)
 
-        # Continue assigning jobs until salesman is at capacity.
-        while not salesman.is_at_capacity():
+        # Continue assigning jobs until salesman is at capacity or all clusters are exhaused or empty.
+        while not salesman.is_at_max_capacity() and unassigned_jobs and len(exhausted_clusters) < n_clusters:
             ############################################################################
             ## Step 1: Try assign first job of iteration from non-exhausted clusters. ##
             ############################################################################
             first_job = None
             for job in unassigned_jobs:
-                if job.cluster in exhausted_clusters:
+                # Skip jobs from exhausted clusters or those that start before the salesman.
+                if job_starts_after_salesman(roster, salesman, job) or job.cluster in exhausted_clusters:
                     continue
-                arrival_time = _get_arrival_time_if_possible(salesman, job)
-                if job_starts_after_salesman(roster, salesman, job):
-                    arrival_time = None
+                arrival_time = get_arrival_time_if_possible(salesman, job)
                 if arrival_time is not None:
-                    # Assign the first job from a non-exhausted cluster.
                     roster.assign_job_to_salesman(job, salesman, arrival_time)
                     unassigned_jobs.remove(job)
                     first_job = job
-                    break
+                    break # Once a job is assigned, break out of the loop to start assigning from the cluster.
             if first_job is None:
-                # No assignable job found for remaining non-exhausted clusters.
+                # Potentially couldnt find a job because salesman starts too early
                 salesman.wait(15)
                 continue
 
@@ -88,18 +76,17 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
             clustered_unassigned_jobs = [job for job in unassigned_jobs if job.cluster == current_cluster]
 
             # Iterate to assign as many jobs from this cluster as possible.
-            while not salesman.is_at_capacity() and clustered_unassigned_jobs:
+            while not salesman.is_at_max_capacity() and clustered_unassigned_jobs:
                 job_assigned_in_cluster = False
-                # We iterate over clustered_jobs (which is assumed to be ordered by urgency)
                 for job in clustered_unassigned_jobs.copy():
-                    arrival_time = _get_arrival_time_if_possible(salesman, job)
+                    arrival_time = get_arrival_time_if_possible(salesman, job)
                     if arrival_time is not None:
                         roster.assign_job_to_salesman(job, salesman, arrival_time)
                         unassigned_jobs.remove(job)
                         clustered_unassigned_jobs.remove(job)
                         job_assigned_in_cluster = True
-                        break # Once a job is assigned, restart the loop over clustered_jobs.
-                # If no job in the current cluster could be assigned, mark this cluster exhausted.
+                        break # Once a job is assigned, restart the loop over clustered_jobs in case now some are available given new start time
+                # If no job in the current cluster could be assigned, mark this cluster exhausted until the next salesman
                 if not job_assigned_in_cluster:
                     exhausted_clusters.add(current_cluster)
                     break  # Exit the clustered_jobs loop and try to find a job from a different cluster.
@@ -120,7 +107,7 @@ def job_starts_after_salesman(roster, salesman, job):
     return len(roster.jobs[salesman.salesman_id]) == 0 and job.entry_time > salesman.current_time
 
 
-def _get_arrival_time_if_possible(salesman: Salesman, job: Job) -> datetime | None:
+def get_arrival_time_if_possible(salesman: Salesman, job: Job) -> datetime | None:
     """
     Check if the salesman can start and complete the job given time and location constraints.
     Args:
@@ -147,4 +134,6 @@ def _generate_roster_message(roster: RosterResponse) -> str:
         return "No jobs to assign"
     elif roster.unassigned_jobs:
         return "Roster completed with unassigned jobs"
+    elif any(len(jobs) == 0 for jobs in roster.jobs.values()):
+        return "Roster completed with unused salesmen"
     return "Roster completed with all jobs assigned"

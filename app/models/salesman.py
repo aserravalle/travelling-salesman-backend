@@ -52,7 +52,7 @@ class Salesman(BaseModel):
         )
         return job_finished_in_time and not salesman_exceeds_max_hours
 
-    def is_at_capacity(self) -> bool:
+    def is_at_max_capacity(self) -> bool:
         """If the salesman is close to reaching the maximum workday limit."""
         return self.time_worked_mins >= self.max_workday_mins - 80
 

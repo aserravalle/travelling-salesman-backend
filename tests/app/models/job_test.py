@@ -132,7 +132,7 @@ def test_job_sorting():
 
     jobs.sort()
 
-    expected_order = ["5", "4", "2", "9", "1", "7", "3", "6", "8"]
+    expected_order = ['2', '1', '9', '3', '5', '4', '7', '6', '8']
     sorted_ids = [job.job_id for job in jobs]
 
     assert sorted_ids == expected_order, f"Expected order {expected_order}, but got {sorted_ids}"

@@ -57,6 +57,9 @@ class Job(BaseModel):
         Returns:
             float: Urgency score
         """
+        return self.get_urgency()
+
+    def get_urgency(self) -> float:
         time_diff = self.exit_time - self.entry_time
         time_diff_mins = time_diff.total_seconds() / 60
         urgency = (self.duration_mins ** 2) / time_diff_mins

@@ -1,0 +1,131 @@
+{
+  "jobs": {
+      "101": [
+          {
+              "job_id": "5",
+              "client_name": "Airbnb 5",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7687,
+                  "longitude": 11.2687,
+                  "address": "5, Via Ghibellina, San Niccolò, Quartiere 1, Firenze, Toscana, 50121, Italia"
+              },
+              "duration_mins": 120,
+              "entry_time": "2025-03-28T08:40:00",
+              "exit_time": "2025-03-28T14:00:00",
+              "salesman_id": "101",
+              "salesman_name": "Francesco",
+              "start_time": "2025-03-28T09:00:00",
+              "cluster": 1
+          },
+          {
+              "job_id": "7",
+              "client_name": "Airbnb 7",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7689,
+                  "longitude": 11.2606,
+                  "address": "Piazza Santa Croce, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+              },
+              "duration_mins": 120,
+              "entry_time": "2025-03-28T10:00:00",
+              "exit_time": "2025-03-28T14:30:00",
+              "salesman_id": "101",
+              "salesman_name": "Francesco",
+              "start_time": "2025-03-28T11:20:00",
+              "cluster": 0
+          },
+          {
+              "job_id": "4",
+              "client_name": "Airbnb 4",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7677,
+                  "longitude": 11.2596,
+                  "address": "4 R, Via dei Benci, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+              },
+              "duration_mins": 120,
+              "entry_time": "2025-03-28T11:00:00",
+              "exit_time": "2025-03-28T23:00:00",
+              "salesman_id": "101",
+              "salesman_name": "Francesco",
+              "start_time": "2025-03-28T13:40:00",
+              "cluster": 0
+          },
+          {
+              "job_id": "1",
+              "client_name": "Airbnb 1",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7677,
+                  "longitude": 11.2593,
+                  "address": "1 R, Via dei Neri, San Niccolò, Quartiere 1, Firenze, Toscana, 50122, Italia"
+              },
+              "duration_mins": 120,
+              "entry_time": "2025-03-28T08:00:00",
+              "exit_time": "2025-03-28T23:00:00",
+              "salesman_id": "101",
+              "salesman_name": "Francesco",
+              "start_time": "2025-03-28T16:00:00",
+              "cluster": 0
+          }
+      ],
+      "102": [
+          {
+              "job_id": "6",
+              "client_name": "Airbnb 6",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7738,
+                  "longitude": 11.2547,
+                  "address": "6, Borgo San Lorenzo, Quartiere 1, Firenze, Toscana, 50123, Italia"
+              },
+              "duration_mins": 120,
+              "entry_time": "2025-03-28T10:00:00",
+              "exit_time": "2025-03-28T23:00:00",
+              "salesman_id": "102",
+              "salesman_name": "Alessio",
+              "start_time": "2025-03-28T10:00:00",
+              "cluster": 3
+          },
+          {
+              "job_id": "3",
+              "client_name": "Airbnb 3",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7704,
+                  "longitude": 11.2512,
+                  "address": "Tornabuoni Beacci, 3, Via dei Tornabuoni, Oltrarno, Quartiere 1, Firenze, Toscana, 50123, Italia"
+              },
+              "duration_mins": 120,
+              "entry_time": "2025-03-28T11:00:00",
+              "exit_time": "2025-03-28T23:00:00",
+              "salesman_id": "102",
+              "salesman_name": "Alessio",
+              "start_time": "2025-03-28T12:20:00",
+              "cluster": 2
+          },
+          {
+              "job_id": "2",
+              "client_name": "Airbnb 2",
+              "date": "2025-03-28T09:00:00",
+              "location": {
+                  "latitude": 43.7714,
+                  "longitude": 11.2507,
+                  "address": "2, Via della Vigna Nuova, San Frediano, Quartiere 1, Firenze, Toscana, 50123, Italia"
+              },
+              "duration_mins": 90,
+              "entry_time": "2025-03-28T12:00:00",
+              "exit_time": "2025-03-28T23:00:00",
+              "salesman_id": "102",
+              "salesman_name": "Alessio",
+              "start_time": "2025-03-28T14:40:00",
+              "cluster": 2
+          }
+      ],
+      "103": [],
+      "104": []
+  },
+  "unassigned_jobs": [],
+  "message": "Roster completed with unused salesmen"
+}

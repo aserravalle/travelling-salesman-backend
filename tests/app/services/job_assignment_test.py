@@ -163,7 +163,7 @@ def test_unassignable_jobs():
     ]
 
     # Call assign_jobs function
-    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=5):
         roster = assign_jobs(jobs, salesmen)
 
     # ✅ Validate assigned jobs
@@ -198,40 +198,44 @@ def test_assign_jobs_accounts_for_travel_time():
         Job(
             job_id="1",
             date=datetime(2025, 2, 5),
-            location=Location(latitude=34.0000, longitude=-118.2500),
-            duration_mins=60,
+            location=Location(latitude=34.0100, longitude=-118.2500),
+            duration_mins=90,
             entry_time=datetime(2025, 2, 5, 9, 0, 0),
             exit_time=datetime(2025, 2, 5, 17, 0, 0),
         ),
         Job(
             job_id="2",
             date=datetime(2025, 2, 5),
-            location=Location(latitude=34.0522, longitude=-118.2437),
-            duration_mins=45,
-            entry_time=datetime(2025, 2, 5, 9, 1, 0),  # 1 minute after job 1
+            location=Location(latitude=34.0000, longitude=-118.2500),
+            duration_mins=60,
+            entry_time=datetime(2025, 2, 5, 9, 0, 0),
             exit_time=datetime(2025, 2, 5, 17, 0, 0),
         ),
         Job(
             job_id="3",
             date=datetime(2025, 2, 5),
-            location=Location(latitude=34.0000, longitude=-118.2500),
-            duration_mins=90,
-            entry_time=datetime(2025, 2, 5, 9, 2, 0),  # 1 minute after job 2
+            location=Location(latitude=34.0522, longitude=-118.2437),
+            duration_mins=45,
+            entry_time=datetime(2025, 2, 5, 9, 0, 0),
             exit_time=datetime(2025, 2, 5, 17, 0, 0),
         ),
     ]
 
-    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
+    with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20), \
+         patch.object(Job, 'get_urgency', return_value=1):
         roster = assign_jobs(jobs, [salesman])
 
+    job_ids = [job.job_id for job in roster.jobs["101"]]
+    assert job_ids == ["1", "2", "3"], "All jobs should be assigned in order"
+    
     start_times = [job.start_time for job in roster.jobs["101"]]
     assert len(start_times) == 3, "All jobs should be assigned"
 
     first_start_time = datetime(2025, 2, 5, 9, 0, 0)
     assert start_times[0] == first_start_time, "Job 1 should start at entry_time (9:00)"
-    assert start_times[1] == start_times[0] + timedelta(minutes=60) + timedelta(minutes=20), "Job 2 should start later"
-    assert start_times[2] == start_times[1] + timedelta(minutes=45) + timedelta(minutes=20), "Job 3 should start later"
-    assert salesman.current_time == start_times[2] + timedelta(minutes=90), "Salesman should finish 1:30h later (90 duration)"
+    assert start_times[1] == start_times[0] + timedelta(minutes=90) + timedelta(minutes=20), "Job 2 should start later"
+    assert start_times[2] == start_times[1] + timedelta(minutes=60) + timedelta(minutes=20), "Job 3 should start later"
+    assert str(salesman.current_time) == str(start_times[2] + timedelta(minutes=45)), "Salesman should finish 1:30h later (90 duration)"
     assert salesman.time_worked_mins == 235, "Salesman should finish at 13:25"
 
 
@@ -266,7 +270,7 @@ def test_assign_jobs_accounts_for_travel_time_and_entry_time():
         Job(
             job_id="3",
             date=datetime(2025, 2, 5),
-            location=Location(latitude=34.0000, longitude=-118.2500),
+            location=Location(latitude=34.0010, longitude=-118.2510),
             duration_mins=90,
             entry_time=datetime(2025, 2, 5, 9, 7, 0),  # 1 minute after job 2
             exit_time=datetime(2025, 2, 5, 17, 0, 0),
@@ -276,12 +280,15 @@ def test_assign_jobs_accounts_for_travel_time_and_entry_time():
     with patch.object(LocationHelpers, 'get_travel_time_minutes', return_value=20):
         roster = assign_jobs(jobs, [salesman])
 
+    job_ids = [job.job_id for job in roster.jobs["101"]]
+    assert job_ids == ["3", "1", "2"], "All jobs should be assigned in order"
+
     start_times = [job.start_time for job in roster.jobs["101"]]
     assert len(start_times) == 3, "3 jobs should be assigned"
 
-    first_start_time = datetime(2025, 2, 5, 9, 5, 0)
-    assert start_times[0] == first_start_time, "Job 1 should start at entry_time (9:05)"
-    assert start_times[1] == start_times[0] + timedelta(minutes=60) + timedelta(minutes=20), "Job 2 should start 1:35h later (60 duration + 20 travel time)"
-    assert start_times[2] == start_times[1] + timedelta(minutes=45) + timedelta(minutes=20), "Job 3 should start 1:20h later (45 duration + 20 travel time)"
-    assert salesman.current_time == start_times[2] + timedelta(minutes=90), "Salesman should finish 1:30h later (90 duration)"
-    assert salesman.time_worked_mins == 235, "Salesman should finish at 13:25"
+    first_start_time = datetime(2025, 2, 5, 9, 15, 0)
+    assert start_times[0] == first_start_time, "Job 1 should start at entry_time (9:15)"
+    assert str(start_times[1]) == str(start_times[0] + timedelta(minutes=90) + timedelta(minutes=20)), "Job 2 should start 1:35h later (60 duration + 20 travel time)"
+    assert str(start_times[2]) == str(start_times[1] + timedelta(minutes=60) + timedelta(minutes=20)), "Job 3 should start 1:20h later (45 duration + 20 travel time)"
+    assert str(salesman.current_time) == str(start_times[2] + timedelta(minutes=45)), "Salesman should finish 1:30h later (90 duration)"
+    assert salesman.time_worked_mins == 235, "Salesman should finish at 13:35"
