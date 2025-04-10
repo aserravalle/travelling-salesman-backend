@@ -56,5 +56,9 @@ class Location(BaseModel):
         """
         if self.is_same_location_as(other):
             return timedelta(minutes=5)
+        
+        coord1 = (self.latitude, self.longitude)
+        coord2 = (other.latitude, other.longitude)
+        travel_time = LocationHelpers.get_travel_time_minutes(coord1, coord2)
 
-        return timedelta(minutes=20)
+        return timedelta(minutes=max(5, travel_time))
