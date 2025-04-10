@@ -49,6 +49,9 @@ class RosterResponse(BaseModel):
             salesman: Salesman to assign the job to
             job_start_time: When the job should start
         """
+        address = job.location.address[:30] if job.location and job.location.address else "N/A"
+        print(f"Assigning to salesman {salesman.salesman_id}: job_id {job.job_id}\turgency {int(job.urgency)}\tduration {str(job.duration_mins)}\tstart {str(job_start_time)}\taddress {address}")
+        
         job.assign_salesman(salesman.salesman_id, job_start_time, salesman.salesman_name)
         salesman.assign_job(job)
         self.jobs[salesman.salesman_id].append(job)

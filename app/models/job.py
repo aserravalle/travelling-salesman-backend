@@ -32,6 +32,7 @@ class Job(BaseModel):
     salesman_id: Optional[str] = None
     salesman_name: Optional[str] = None
     start_time: Optional[datetime] = None
+    cluster: Optional[int] = None
     _travel_time_mins: Optional[int] = 0
 
     @field_validator('exit_time')
@@ -69,12 +70,4 @@ class Job(BaseModel):
         3. Job duration
         4. Time window duration
         """
-        return (
-            self.date,
-            self.entry_time,
-            self.urgency
-        ) < (
-            other.date,
-            other.entry_time,
-            other.urgency
-        )
+        return self.urgency < other.urgency

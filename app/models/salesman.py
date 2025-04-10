@@ -31,7 +31,7 @@ class Salesman(BaseModel):
     current_location: Optional[Location] = None
     current_time: Optional[datetime] = None
     time_worked_mins: int = Field(default=0, ge=0)
-    max_workday_mins: int = Field(default=8 * 60, ge=0)  # 8 hours
+    max_workday_mins: int = Field(default=9 * 60, ge=0)  # 9 hours
 
     def can_complete_job_in_time(
         self, job_exit_time: datetime, completion_time: datetime
@@ -52,6 +52,19 @@ class Salesman(BaseModel):
         )
         return job_finished_in_time and not salesman_exceeds_max_hours
 
+    def is_at_capacity(self) -> bool:
+        """If the salesman is close to reaching the maximum workday limit."""
+        return self.time_worked_mins >= self.max_workday_mins - 80
+
+    def wait(self, minutes) -> None:
+        """Make the salesman wait on or off the clock depending on whether theyve started work already or not"""
+        if self.is_first_job():
+            self.start_time += timedelta(minutes=minutes)
+            self.current_time = self.start_time
+        else:
+            self.current_time += timedelta(minutes=minutes)
+            self.time_worked_mins += minutes
+
     def assign_job(self, job: Job) -> None:
         """
         Update salesman's state after job assignment.
@@ -61,7 +74,7 @@ class Salesman(BaseModel):
         """
         buffer_time = (
             job.start_time - self.current_time
-        ).total_seconds() / 60  # time waiting and travelling between jobs
+        ).total_seconds() / 60  # accounts for travel time + waiting for the job to become available
         if self.is_first_job():
             self.start_time = job.start_time
             buffer_time = 0  # Travel time to first job is not paid

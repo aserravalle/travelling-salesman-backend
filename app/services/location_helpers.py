@@ -133,7 +133,7 @@ class LocationHelpers:
         return rawAddress.replace('ª', '').replace('º', '')
     
     @staticmethod
-    def get_travel_time_minutes(coord1: tuple[float, float], coord2: tuple[float, float], average_speed_kmh: int = 10) -> int:
+    def get_travel_time_minutes(coord1: tuple[float, float], coord2: tuple[float, float], average_speed_kmh: int = 5) -> int:
         """
         Calculate travel time between two locations as the crow flies.
         Args:
@@ -141,12 +141,13 @@ class LocationHelpers:
             coord2: Tuple containing latitude and longitude of the second location.
             average_speed_kmh: Average speed in km/h (default is 10 km/h).
         Returns:
-            Estimated travel time as timedelta.
+            Estimated travel time in minutes, rounded to the nearest second.
         """
         distance_km = LocationHelpers.get_distance_between(coord1, coord2)
         travel_time_hours = distance_km / average_speed_kmh
+        travel_time_minutes = travel_time_hours * 60
 
-        return travel_time_hours * 60
+        return round(travel_time_minutes)
 
     @staticmethod
     def get_distance_between(coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
