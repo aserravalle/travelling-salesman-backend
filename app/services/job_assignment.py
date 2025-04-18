@@ -45,7 +45,7 @@ def assign_jobs(jobs: List[Job], salesmen: List[Salesman]) -> RosterResponse:
         # Get the next salesman to work
         salesman = unrostered_salesmen.pop(0)
         exhausted_clusters = set()  # Clusters that this salesman cannot accept any more jobs from
-        print("Assigning jobs to:", salesman.salesman_id)
+        print(len(unassigned_jobs), "unassigned jobs and", len(unrostered_salesmen), "free salesmen. Assigning jobs to:", salesman.salesman_id)
 
         # Continue assigning jobs until salesman is at capacity or all clusters are exhaused or empty.
         while not salesman.is_at_max_capacity() and unassigned_jobs and len(exhausted_clusters) < n_clusters:

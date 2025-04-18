@@ -503,5 +503,85 @@
       "latitude": 39.4874,
       "longitude": -0.3932,
       "address": "C/ de Miguel Servet, 18, Benicalap, 46015 València, Valencia, Spain"
+    },
+    "CALLE OBISPO MUÑOZ 4, 46100, BURJASOT, VALENCIA, ESPAÑA": {
+      "latitude": 39.5058,
+      "longitude": -0.4069,
+      "address": "Carrer del Bisbe Muñoz, 4, 46100 Burjassot, Valencia, Spain"
+    },
+    "C/ Cavite 89, 46011, Valencia, VALENCIA, ESPAÑA": {
+      "latitude": 39.4803,
+      "longitude": -0.3268,
+      "address": "C/ de Cavite, 89, Poblados Marítimos, 46011 València, Valencia, Spain"
+    },
+    "Plaza de Rojas Clemente 1, 46008, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4727,
+      "longitude": -0.3854,
+      "address": "Pl. de Rojas Clemente, 1, Extramurs, 46008 València, Valencia, Spain"
+    },
+    "AVINGUDA DEL REGNE DE VALENCIA, 37, 46005, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4639,
+      "longitude": -0.3679,
+      "address": "Av. del Regne de València, 37, L'Eixample, 46005 València, Valencia, Spain"
+    },
+    "Ausiás March 27, 46006, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4544,
+      "longitude": -0.3735,
+      "address": "Av. d'Ausiàs March, 27, Quatre Carreres, 46006 València, Valencia, Spain"
+    },
+    "CALLE LA PAZ 20, 46002, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4733,
+      "longitude": -0.3737,
+      "address": "C/ de la Pau, 20, Ciutat Vella, 46002 València, Valencia, Spain"
+    },
+    "Calle Granada 3, 46004, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4605,
+      "longitude": -0.3637,
+      "address": "C. de Granada, 3, Quatre Carreres, 46006 València, Valencia, Spain"
+    },
+    "Avda. Francia 159, 46024, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4582,
+      "longitude": -0.3347,
+      "address": "Av. de França, 159, Poblados Marítimos, 46024 València, Valencia, Spain"
+    },
+    "PASSEIG DE LA CIUDADELA 16, 46004, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4684,
+      "longitude": -0.3707,
+      "address": "46004 Valencia, Spain"
+    },
+    "Calle Convento de Jersulén 20, 46007, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4668,
+      "longitude": -0.3795,
+      "address": "C/ del Convent de Jerusalem, 20, Extramurs, 46007 València, Valencia, Spain"
+    },
+    "CALLE SAN VICENTE MARTIR, 153, 46007, VALENCIA, VALENCIA, ESPAÑA": {
+      "latitude": 39.4617,
+      "longitude": -0.3822,
+      "address": "C/ de Sant Vicent Màrtir, 153, Extramurs, 46007 València, Valencia, Spain"
+    },
+    "C/ CARNICEROS, 3, Valencia, Valencia": {
+      "latitude": 39.4737,
+      "longitude": -0.3815,
+      "address": "C/ dels Carnissers, 3, Ciutat Vella, 46001 València, Valencia, Spain"
+    },
+    "CAMINO NUEVO DE PICAÑA, 15, VALENCIA, Valencia": {
+      "latitude": 39.4565,
+      "longitude": -0.4038,
+      "address": "Camí Nou de Picanya, 15, Patraix, 46014 València, Valencia, Spain"
+    },
+    "C/ CORAZON DE JESUS, 6, VALENCIA, Valencia": {
+      "latitude": 39.748,
+      "longitude": -0.9986,
+      "address": "C. Corazón de Jesús, 6, 46176 Chelva, Valencia, Spain"
+    },
+    "C/ CARNICEROS, 3, VALENCIA, Valencia": {
+      "latitude": 39.4737,
+      "longitude": -0.3815,
+      "address": "C/ dels Carnissers, 3, Ciutat Vella, 46001 València, Valencia, Spain"
+    },
+    "C/ MARTIN EL HUMANO, 9, VALENCIA, Valencia": {
+      "latitude": 39.4712,
+      "longitude": -0.3911,
+      "address": "Carrer de Martí l'Humà, 9, Extramurs, 46008 València, Valencia, Spain"
     }
   }

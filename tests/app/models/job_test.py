@@ -162,3 +162,20 @@ def test_job_validation():
             entry_time=datetime(2025, 2, 6, 14, 0, 0),
             exit_time=datetime(2025, 2, 6, 10, 0, 0),
         )
+
+
+def test_exit_time_adjustment():
+    location = Location(latitude=40.7128, longitude=-74.0060)
+    
+    # Create a job with entry_time and exit_time 30 minutes apart, but duration_mins is 60
+    job = Job(
+        job_id="10",
+        date=datetime(2025, 2, 6),
+        location=location,
+        duration_mins=60,
+        entry_time=datetime(2025, 2, 6, 10, 0, 0),
+        exit_time=datetime(2025, 2, 6, 10, 30, 0),
+    )
+    
+    # Assert that exit_time has been adjusted to 1 hour after entry_time
+    assert job.exit_time == datetime(2025, 2, 6, 11, 0, 0), f"Expected exit_time to be adjusted to 11:00, but got {job.exit_time}"

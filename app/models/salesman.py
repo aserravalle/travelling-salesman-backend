@@ -53,8 +53,10 @@ class Salesman(BaseModel):
         return job_finished_in_time and not salesman_exceeds_max_hours
 
     def is_at_max_capacity(self) -> bool:
-        """If the salesman is close to reaching the maximum workday limit."""
-        return self.time_worked_mins >= self.max_workday_mins - 80
+        """True if the salesman is close to reaching the maximum workday limit."""
+        is_overtime = self.time_worked_mins >= self.max_workday_mins - 80
+        is_unavailable = self.current_time >= self.end_time
+        return is_overtime or is_unavailable
 
     def wait(self, minutes) -> None:
         """Make the salesman wait on or off the clock depending on whether theyve started work already or not"""

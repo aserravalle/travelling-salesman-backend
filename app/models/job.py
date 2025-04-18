@@ -1,5 +1,5 @@
-from pydantic import BaseModel, field_validator
-from datetime import datetime
+from pydantic import BaseModel, field_validator, model_validator
+from datetime import datetime, timedelta
 from typing import Optional
 from pydantic import Field
 
@@ -41,6 +41,13 @@ class Job(BaseModel):
         if 'entry_time' in values.data and v < values.data['entry_time']:
             raise ValueError('exit_time must be after entry_time')
         return v
+
+    @model_validator(mode="after")
+    def adjust_exit_time_if_needed(self) -> 'Job':
+        availability = (self.exit_time - self.entry_time).total_seconds() / 60
+        if availability < self.duration_mins:
+            self.exit_time = self.entry_time + timedelta(minutes=self.duration_mins)
+        return self
 
     def assign_salesman(
         self, salesman_id: str, job_start_time: datetime, salesman_name: str = ""
